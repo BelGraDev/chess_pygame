@@ -1,7 +1,10 @@
 import pygame
 import sys
 
-# pygame.init()
+pygame.init()
+
+rect = pygame.Rect(10, 10 ,30, 30)
+print(rect.centerx, rect.centery)
 
 # def draw_board(width, height, screen):
 
@@ -41,6 +44,3 @@ import sys
 
 #     pygame.display.update()
 
-
-
-print(map(int(chr("a"))))

@@ -4,15 +4,11 @@ import pygame
 
 class Pawn(Pieces):
 
-    def __init__(self, position) -> None:
+    def __init__(self, cell, type) -> None:
 
-        self.image = pygame.image.load("Pieces/images/pawn.png")
-        self.position = position
+        self.cell = cell
+        self.image = pygame.image.load(f"Pieces/images/{type}_pawn.png")
 
-    def render_piece(self, screen) -> None:
-        image = self.image
-        screen.blit(image, self)
-
-    def move(cell: str) -> str:
-        pass
+    def move(self, cell: str) -> str:
+        self.cell = cell
 
