@@ -44,3 +44,9 @@ print(rect.centerx, rect.centery)
 
 #     pygame.display.update()
 
+piece = {
+    "a": 3
+}
+print(piece.items())
+del piece["a"]
+print(print(piece.items()))

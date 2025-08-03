@@ -1,15 +1,17 @@
 import pygame
 import sys
 from Board.Board import Board
+from Render.ChessUI import ChessUI
 
 pygame.init()
 
 board = Board()
-size = board.get_size()
+renderer = ChessUI(board)
+
+size = renderer.get_board_size()
 screen = pygame.display.set_mode(size)
 screen.fill((137,81,41))
-board.draw_board(screen)
-board.draw_pieces(screen)
+renderer.init_board_pieces(screen)
 
 clock = pygame.time.Clock()
 
@@ -20,7 +22,7 @@ while True:
            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             coord = pygame.mouse.get_pos()
-            print(board.selected_cell(coord))
+            print(renderer.selected_cell(coord))
 
     pygame.display.update()
     clock.tick(60)
