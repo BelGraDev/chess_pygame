@@ -4,11 +4,10 @@ from Pieces.Pawn import Pawn
 from Pieces.King import King
 from Pieces.Queen import Queen
 from Pieces.Knight import Knight
-
+from Board.Cell_utils import Cell_utils
 class Board:
 
     #Before i forget, once a cell is obtained, i get the corresponding click from the mouse click, look at the piece that is on the cell in the dict cells, and access to its move function. Before all this happens, a first click will need to happen, in order to select the piece.
-
     def __init__(self):
 
         self.board =  {
@@ -46,5 +45,22 @@ class Board:
             "h7": Pawn("h7", "b")
         }
 
-                
+    def move(self, prev_cell, next_cell) -> bool:
+
+        prev_piece = self.board[prev_cell]
+
+        if Cell_utils.is_cell_empty(next_cell, self):
+            self.board[next_cell] = prev_piece
+            del self.board[prev_cell]
+            print(f"Next cell is empty, moving to {next_cell}")
+            return True
+        
+        elif Cell_utils.is_white_piece(next_cell, self) != Cell_utils.is_white_piece(prev_cell, self):
+                self.board[next_cell] = prev_piece
+                del self.board[prev_cell]
+                print(f"I've killed a man, moving to {next_cell}")
+                return True
+        
+        print(f"Teammate in my target, staying on {prev_cell}")
+        return False
 

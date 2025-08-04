@@ -3,7 +3,7 @@ import pygame
 
 class Bishop(Pieces):
     
-        def __init__(self, cell, type) -> None:
+    def __init__(self, cell, type) -> None:
 
-            self.cell = cell
-            self.image = pygame.image.load(f"Pieces/images/{type}_bishop.png")
+        super().__init__(cell, type)
+        self.image = pygame.image.load(f"Pieces/images/{type}_bishop.png")

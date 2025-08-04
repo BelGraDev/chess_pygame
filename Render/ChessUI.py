@@ -1,4 +1,5 @@
-from Board.Cell import Cell
+from Render.Cell import Cell
+from Board.Cell_utils import Cell_utils
 import pygame
 
 class ChessUI:
@@ -7,35 +8,35 @@ class ChessUI:
     CELL_SIZE = 75
     MARGIN_SIZE = 25
     BOARD_WIDTH = BOARD_HEIGHT = 600
+    WHITE_COLOR = (255, 255, 255)
+    BLACK_COLOR = (100, 100, 100, 255)
+
 
     def __init__(self, board):
 
         self.cells = [[], [], [], [], [], [], [], []]
         self.board = board
+        self.cell_highlighted = None
     
     def init_board(self, screen) -> None:
-        white_color = (255, 255, 255)
-        black_color = (100, 100, 100, 255)
-
         for row in range(8):
             for col in range(8):
 
                 x = self.MARGIN_SIZE + col * self.CELL_SIZE
                 y = self.MARGIN_SIZE + row * self.CELL_SIZE
-                cell_name = Cell.map_index_to_cell(row, col)
-                color = white_color if (row + col) % 2 == 0 else black_color       
+                cell_name = Cell_utils.map_index_to_cell(row, col)
+                color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.BLACK_COLOR       
                 cell = Cell((x, y), cell_name)
                 pygame.draw.rect(screen, color, cell)
                 self.cells[row].append(cell)
 
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
-        pygame.draw.rect(screen, white_color, border,  1)
+        pygame.draw.rect(screen, self.WHITE_COLOR, border,  1)
         
     def init_pieces(self, screen):
 
         for cell, piece in self.board.board.items():
-            row, col = Cell.map_cell_to_index(cell)
-            rect = self.cells[row][col]
+            rect = self.get_cell_rect(cell)
             screen.blit(piece.image, rect)
 
     def init_board_pieces(self, screen):
@@ -48,7 +49,7 @@ class ChessUI:
         height = self.BOARD_HEIGHT + self.MARGIN_SIZE * 2
         return width, height
     
-    def selected_cell(self, coord) -> str:
+    def selected_cell(self, coord) -> str | None:
         
         for row in range(8):
             for col in range(8):
@@ -57,3 +58,36 @@ class ChessUI:
                     return cell.name
                 
         return None
+    
+    #I still have to implement the unhighlight in case another piece is selected.
+    def highlight_cell(self, screen, cell) -> None:
+
+        if not self.cell_highlighted:
+            try:
+                piece = self.board.board[cell]
+                rect = self.get_cell_rect(cell)
+                self.cell_highlighted = cell
+
+                pygame.draw.rect(screen, (253, 216, 8), rect)
+                screen.blit(piece.image, rect)
+
+            except KeyError:
+                print("Clicked empty cell")
+    
+    def draw_single_cell(cell):
+        pass
+
+    
+    def render_move(self, screen, cell):
+        if self.cell_highlighted:
+            prev_cell = self.cell_highlighted
+            if self.board.move(prev_cell, cell):
+                rect = self.get_cell_rect(cell) 
+                piece = self.board.board[cell]
+                screen.blit(piece.image, rect)
+                #self.cell_highlighted = None             If i do not comment this line, the error is king of solved
+
+    def get_cell_rect(self, cell):
+        row, col = Cell_utils.map_cell_to_index(cell)
+        rect = self.cells[row][col]
+        return rect
