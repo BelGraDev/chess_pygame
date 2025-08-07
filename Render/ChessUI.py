@@ -26,7 +26,7 @@ class ChessUI:
                 y = self.MARGIN_SIZE + row * self.CELL_SIZE
                 cell_name = Cell_utils.map_index_to_cell(row, col)
                 color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.BLACK_COLOR       
-                cell = Cell((x, y), cell_name)
+                cell = Cell((x, y), cell_name, color)
                 pygame.draw.rect(screen, color, cell)
                 self.cells[row].append(cell)
 
@@ -59,35 +59,64 @@ class ChessUI:
                 
         return None
     
-    #I still have to implement the unhighlight in case another piece is selected.
-    def highlight_cell(self, screen, cell) -> None:
+    def highlight_cell(self, screen, cell_name) -> None:
 
-        if not self.cell_highlighted:
-            try:
-                piece = self.board.board[cell]
-                rect = self.get_cell_rect(cell)
-                self.cell_highlighted = cell
+        try:
+            piece = self.board.board[cell_name]
+            cell = self.cell_highlighted = self.get_cell_rect(cell_name)
 
-                pygame.draw.rect(screen, (253, 216, 8), rect)
-                screen.blit(piece.image, rect)
+            pygame.draw.rect(screen, (253, 216, 8), cell)
+            screen.blit(piece.image, cell)
 
-            except KeyError:
-                print("Clicked empty cell")
+        except KeyError:
+            print("Clicked empty cell")
     
-    def draw_single_cell(cell):
-        pass
+    def unhighlight_cell(self,screen, cell):
+        self.cell_highlighted = None
+        pygame.draw.rect(screen, cell.color, cell)
 
     
-    def render_move(self, screen, cell):
-        if self.cell_highlighted:
-            prev_cell = self.cell_highlighted
-            if self.board.move(prev_cell, cell):
-                rect = self.get_cell_rect(cell) 
-                piece = self.board.board[cell]
-                screen.blit(piece.image, rect)
-                #self.cell_highlighted = None             If i do not comment this line, the error is king of solved
+    def render_move(self, screen, cell_name) -> None:
+        prev_cell = self.cell_highlighted
+        if prev_cell:
+            
+            move_result = self.board.move(prev_cell.name, cell_name)
+            match move_result:
 
-    def get_cell_rect(self, cell):
-        row, col = Cell_utils.map_cell_to_index(cell)
-        rect = self.cells[row][col]
-        return rect
+                case 0:
+                    self.move_to_cell(screen, cell_name)
+                case 1:
+                    self.render_kill(screen, cell_name)
+                case _:
+                    self.switch_focus(screen, prev_cell, cell_name)
+                    return
+                
+            self.unhighlight_cell(screen, prev_cell)
+
+        else:
+            self.highlight_cell(screen, cell_name)
+
+    def move_to_cell(self, screen, cell_name) -> None:
+        cell = self.get_cell_rect(cell_name) 
+        piece = self.board.board[cell_name]
+        screen.blit(piece.image, cell)
+    
+    def render_kill(self, screen, cell_name) -> None:
+        cell = self.get_cell_rect(cell_name) 
+        piece = self.board.board[cell_name]
+        pygame.draw.rect(screen, cell.color, cell)
+        screen.blit(piece.image, cell)
+
+    def switch_focus(self, screen, prev_cell, cell_name) -> None:
+
+        self.highlight_cell(screen, cell_name)
+
+        prev_piece = self.board.board[prev_cell.name]
+        pygame.draw.rect(screen, prev_cell.color, prev_cell)
+        screen.blit(prev_piece.image, prev_cell)
+
+
+    def get_cell_rect(self, cell_name):
+        row, col = Cell_utils.map_cell_to_index(cell_name)
+        cell = self.cells[row][col]
+        return cell

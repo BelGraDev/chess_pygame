@@ -45,22 +45,22 @@ class Board:
             "h7": Pawn("h7", "b")
         }
 
-    def move(self, prev_cell, next_cell) -> bool:
+    def move(self, prev_cell, next_cell) -> int:
 
         prev_piece = self.board[prev_cell]
 
         if Cell_utils.is_cell_empty(next_cell, self):
             self.board[next_cell] = prev_piece
             del self.board[prev_cell]
-            print(f"Next cell is empty, moving to {next_cell}")
-            return True
+            print(f"Next cell is empty, moving from {prev_cell} to {next_cell}")
+            return 0
         
         elif Cell_utils.is_white_piece(next_cell, self) != Cell_utils.is_white_piece(prev_cell, self):
                 self.board[next_cell] = prev_piece
                 del self.board[prev_cell]
-                print(f"I've killed a man, moving to {next_cell}")
-                return True
+                print(f"I've killed a man, moving from {prev_cell} to {next_cell}")
+                return 1
         
         print(f"Teammate in my target, staying on {prev_cell}")
-        return False
+        return -1
 
