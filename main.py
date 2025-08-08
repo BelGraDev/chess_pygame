@@ -13,7 +13,8 @@ controller = GameController(board, renderer)
 size = renderer.get_board_size()
 screen = pygame.display.set_mode(size)
 screen.fill((137,81,41))
-controller.init_board_pieces(screen)
+renderer.screen = screen
+controller.init_board_pieces()
 
 clock = pygame.time.Clock()
 
@@ -26,7 +27,8 @@ while True:
             coord = pygame.mouse.get_pos()
             cell = controller.selected_cell(coord)
             if cell:
-                controller.render_move(screen, cell)
+                controller.render_move(cell)
+
 
     pygame.display.update()
     clock.tick(60)

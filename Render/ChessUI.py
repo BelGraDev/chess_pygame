@@ -15,11 +15,13 @@ class ChessUI:
 
 
     def __init__(self):
-
         self.cells = [[], [], [], [], [], [], [], []]
+        self.move_empty = pygame.image.load("Pieces/images/move.png")
+        self.move_capture = pygame.image.load("Pieces/images/capture.png")
+        self.screen = None
 
     
-    def init_board(self, screen) -> None:
+    def init_board(self) -> None:
         for row in range(8):
             for col in range(8):
 
@@ -28,17 +30,17 @@ class ChessUI:
                 cell_name = Cell_utils.map_index_to_cell(row, col)
                 color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.BLACK_COLOR       
                 cell = Cell((x, y), cell_name, color)
-                pygame.draw.rect(screen, color, cell)
+                pygame.draw.rect(self.screen, color, cell)
                 self.cells[row].append(cell)
 
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
-        pygame.draw.rect(screen, self.WHITE_COLOR, border,  1)
+        pygame.draw.rect(self.screen, self.WHITE_COLOR, border,  1)
         
-    def init_pieces(self, screen, board):
+    def init_pieces(self, board):
 
         for cell, piece in board.items():
             rect = self.get_cell_rect(cell)
-            screen.blit(piece.image, rect)
+            self.screen.blit(piece.image, rect)
 
     def get_board_size(self) -> tuple:
         width = self.BOARD_WIDTH + self.MARGIN_SIZE * 2
@@ -50,15 +52,23 @@ class ChessUI:
         cell = self.cells[row][col]
         return cell
     
-    def draw_piece(self, screen, piece, cell) -> None:
-        View_utils.redraw_piece(screen, piece, cell)
-        
-    def draw_highlight(self, screen, piece, cell) -> None:
-        View_utils.redraw_cell_piece(screen, self.HIGHLIGHT_COLOR, piece, cell)
+    def draw_possible_move(self, cell) -> None:
+        #image = self.move_empty if not is_capture else self.move_capture
+        image = self.move_empty
+        View_utils.draw_image(self.screen, image, cell)
 
-    def draw_unhighlight(self, screen, cell) -> None:
-        View_utils.redraw_cell(screen, cell)
+    def undraw_possible_moves(self, cell):
+        View_utils.redraw_cell(self.screen, cell)
+
+    def draw_piece(self, piece, cell) -> None:
+        View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
+        
+    def draw_highlight(self, piece, cell) -> None:
+        View_utils.redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
+
+    def draw_unhighlight(self, cell) -> None:
+        View_utils.redraw_cell(self.screen, cell)
     
-    def draw_replacement_pieces(self, screen, piece, cell) -> None:
-        View_utils.redraw_cell_piece(screen, cell.color, piece, cell)
+    def draw_replacement_pieces(self, piece, cell) -> None:
+        View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
         

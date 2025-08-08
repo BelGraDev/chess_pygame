@@ -1,16 +1,36 @@
 from abc import ABC, abstractmethod
+from Board.Cell_utils import Cell_utils
+from Board.MoveType import MoveType
 import pygame
 
 class Pieces(ABC, pygame.Rect):
 
-    def __init__(self, cell, type) -> None:
+    def __init__(self, cell, type, board) -> None:
         self.cell = cell
         self.type = type
+        self.board = board
         self.has_moved = False
         
 
+    def is_next_possible(self, prev_cell_name, row, col):
 
+        #This way this solves the problem of accessing a non available cell, thus the movement will not be considered in the return of the method possible_moves
+        try:
+            self.board.cells[row][col]
+            next_cell_name = Cell_utils.map_index_to_cell(row, col)
+            move = self.board.in_next_cell(prev_cell_name, next_cell_name)
+
+            match move:
+                case MoveType.EMPTY_CELL | MoveType.CAPTURE:
+                    return next_cell_name
+                case _:
+                    return None
+        except IndexError:
+            return None
+        
+
+            
     @abstractmethod
-    def possible_moves(cell) -> list:
+    def possible_moves(self, cell_name) -> list:
         pass
     
