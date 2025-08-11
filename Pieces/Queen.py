@@ -8,3 +8,6 @@ class Queen(Pieces):
 
         super().__init__(cell, type, board)
         self.image = pygame.image.load(f"Pieces/images/{type}_queen.png")
+
+    def possible_moves(self, cell_name):
+        pass

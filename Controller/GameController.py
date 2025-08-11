@@ -1,4 +1,4 @@
-from Board.MoveType import MoveType
+from Board.Move import MoveType
 
 class GameController:
     def __init__(self, board, chessUI):

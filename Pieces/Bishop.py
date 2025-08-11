@@ -7,3 +7,6 @@ class Bishop(Pieces):
 
         super().__init__(cell, type, board)
         self.image = pygame.image.load(f"Pieces/images/{type}_bishop.png")
+
+    def possible_moves(self, cell_name):
+        pass

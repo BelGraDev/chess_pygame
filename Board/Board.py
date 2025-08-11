@@ -5,7 +5,7 @@ from Pieces.King import King
 from Pieces.Queen import Queen
 from Pieces.Knight import Knight
 from Board.Cell_utils import Cell_utils
-from Board.MoveType import MoveType 
+from Board.Move import MoveType 
 from Board.Board_Cells import Board_cells
 class Board:
 

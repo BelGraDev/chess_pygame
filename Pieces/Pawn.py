@@ -1,6 +1,5 @@
 from .Pieces import Pieces
 from Board.Cell_utils import Cell_utils
-from Board.MoveType import MoveType
 import pygame
 
 
