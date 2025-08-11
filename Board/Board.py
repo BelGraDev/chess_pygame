@@ -6,7 +6,7 @@ from Pieces.Queen import Queen
 from Pieces.Knight import Knight
 from Board.Cell_utils import Cell_utils
 from Board.MoveType import MoveType 
-import numpy as np   
+from Board.Board_Cells import Board_cells
 class Board:
 
     def __init__(self):
@@ -45,7 +45,7 @@ class Board:
             "g7": Pawn("g7", "b", self),
             "h7": Pawn("h7", "b", self)
         }
-        self.cells = np.zeros((8,8))
+        self.cells = Board_cells(8,8)
 
     def in_next_cell(self, prev_cell, next_cell) -> int:
 
@@ -63,19 +63,11 @@ class Board:
         print(next_cell)
         print(f"These are the possible moves: {possible_moves}")
 
+        move = self.in_next_cell(prev_cell, next_cell)
+        
         if next_cell in possible_moves:
-            move = self.in_next_cell(prev_cell, next_cell)
+            self.board[next_cell] = prev_piece
+            del self.board[prev_cell]
 
-            match move:
-
-                case MoveType.EMPTY_CELL:
-                    self.board[next_cell] = prev_piece
-                    del self.board[prev_cell]
-                
-                case MoveType.CAPTURE:
-                    self.board[next_cell] = prev_piece
-                    del self.board[prev_cell]
-                
-            return move
-        else:
-            return MoveType.NOT_AVAILABLE
+        #return MoveType.NOT_AVAILABLE
+        return move

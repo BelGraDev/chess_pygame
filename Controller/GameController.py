@@ -84,5 +84,7 @@ class GameController:
         prev_piece = self.board.board[prev_cell.name]
         self.chessUI.draw_replacement_pieces(prev_piece, prev_cell)
         self.undraw_possible_moves(None, self.possible_moves)
+        self.render_possible_moves(cell_name)
+
 
 

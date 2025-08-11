@@ -15,8 +15,8 @@ class Pawn(Pieces):
 
         row, column = Cell_utils.map_cell_to_index(cell_name)   
 
-        possible_moves = [self.is_next_possible(cell_name, row-1, col) for col in range(column - 1, column + 2)]
-        possible_moves = list(filter(lambda x: x != None, possible_moves))
+        possible_moves = [self.is_next_possible(cell_name, row - 1, col) for col in range(column - 1, column + 2)]
+        possible_moves = [move for move in possible_moves if move is not None]
         print(possible_moves)
 
         if not self.has_moved:
