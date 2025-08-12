@@ -68,9 +68,6 @@ class ChessUI:
         
     def draw_highlight(self, piece, cell) -> None:
         View_utils.redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
-
-    def draw_unhighlight(self, cell) -> None:
-        View_utils.redraw_cell(self.screen, cell)
     
     def draw_replacement_pieces(self, piece, cell) -> None:
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)

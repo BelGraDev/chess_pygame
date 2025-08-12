@@ -6,8 +6,7 @@ import pygame
 
 class Pieces(ABC, pygame.Rect):
 
-    def __init__(self, cell, type, board) -> None:
-        self.cell = cell
+    def __init__(self, type, board) -> None:
         self.type = type
         self.board = board
         self.has_moved = False

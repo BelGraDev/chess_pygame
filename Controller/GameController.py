@@ -30,7 +30,7 @@ class GameController:
 
     def unhighlight_cell(self, cell) -> None:
         self.cell_highlighted = None
-        self.chessUI.draw_unhighlight(cell)
+        self.chessUI.draw_empty_cell(cell)
 
     def render_possible_moves(self, cell_name) -> list:
         piece = self.board.board[cell_name]

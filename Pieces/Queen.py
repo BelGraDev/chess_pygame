@@ -6,9 +6,9 @@ import pygame
 class Queen(Rook, Bishop):
     
     
-    def __init__(self, cell, type, board) -> None:
+    def __init__(self, type, board) -> None:
 
-        super().__init__(cell, type, board)
+        super().__init__(type, board)
         self.image = pygame.image.load(f"Pieces/images/{type}_queen.png")
 
     def possible_moves(self, cell_name):

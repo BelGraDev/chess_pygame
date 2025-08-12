@@ -4,9 +4,9 @@ import pygame
 
 class Bishop(Pieces):
     
-    def __init__(self, cell, type, board) -> None:
+    def __init__(self, type, board) -> None:
 
-        super().__init__(cell, type, board)
+        super().__init__(type, board)
         self.image = pygame.image.load(f"Pieces/images/{type}_bishop.png")
 
     def possible_moves(self, cell_name):
