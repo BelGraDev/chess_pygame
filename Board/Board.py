@@ -4,8 +4,7 @@ from Pieces.Pawn import Pawn
 from Pieces.King import King
 from Pieces.Queen import Queen
 from Pieces.Knight import Knight
-from Board.Cell_utils import Cell_utils
-from Board.Move import MoveType 
+from Board.Move import Move
 from Board.Board_Cells import Board_cells
 class Board:
 
@@ -47,27 +46,14 @@ class Board:
         }
         self.cells = Board_cells(8,8)
 
-    def in_next_cell(self, prev_cell, next_cell) -> int:
-
-        if Cell_utils.is_cell_empty(next_cell, self):
-            return MoveType.EMPTY_CELL
-        
-        elif Cell_utils.is_white_piece(next_cell, self) != Cell_utils.is_white_piece(prev_cell, self):
-            return MoveType.CAPTURE
-        
-        return MoveType.TEAMMATE
-
     def move(self, prev_cell, next_cell) -> int:
         prev_piece = self.board[prev_cell]
         possible_moves = prev_piece.possible_moves(prev_cell)
-        print(next_cell)
-        print(f"These are the possible moves: {possible_moves}")
 
-        move = self.in_next_cell(prev_cell, next_cell)
+        move = Move(self, prev_cell, next_cell)
         
         if next_cell in possible_moves:
             self.board[next_cell] = prev_piece
             del self.board[prev_cell]
 
-        #return MoveType.NOT_AVAILABLE
-        return move
+        return move.type

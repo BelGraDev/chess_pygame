@@ -22,8 +22,6 @@ class Knight(Pieces):
         for r, c in move_offsets:
             move = self.is_next_possible(cell_name, row + r, column + c)
             if move:
-                possible_moves.append(move)
-
-        print(possible_moves)
+                possible_moves.append(move.next_cell)
 
         return possible_moves
