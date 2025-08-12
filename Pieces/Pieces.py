@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Board.Cell_utils import Cell_utils
+from Utils.Cell_utils import Cell_utils
 from Board.Move import MoveType
 from Board.Move import Move
 import pygame

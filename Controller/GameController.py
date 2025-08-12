@@ -1,4 +1,5 @@
 from Board.Move import MoveType
+from Utils.Cell_utils import Cell_utils
 
 class GameController:
     def __init__(self, board, chessUI):
@@ -41,9 +42,14 @@ class GameController:
     
     def undraw_possible_moves(self, moved_to, possible_moves) -> None: 
         for move in possible_moves:
-            if not move == moved_to:
+            if move != moved_to:
                 cell = self.chessUI.get_cell_rect(move)
-                self.chessUI.undraw_possible_moves(cell)
+                
+                if Cell_utils.is_cell_empty(move, self.board):
+                    self.chessUI.draw_empty_cell(cell)
+                else:
+                    piece = self.board.board.get(move)
+                    self.chessUI.draw_replacement_pieces(piece, cell)
 
     def render_move(self, cell_name) -> None:
         prev_cell = self.cell_highlighted

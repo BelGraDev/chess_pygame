@@ -1,4 +1,4 @@
-from Board.Cell_utils import Cell_utils
+from Utils.Cell_utils import Cell_utils
 from enum import Enum
 
 class MoveType(Enum):

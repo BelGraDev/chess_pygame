@@ -1,6 +1,6 @@
 from Render.Cell import Cell
-from Board.Cell_utils import Cell_utils
-from Render.View_utils import View_utils
+from Utils.Cell_utils import Cell_utils
+from Utils.View_utils import View_utils
 import pygame
 
 class ChessUI:
@@ -11,7 +11,9 @@ class ChessUI:
     BOARD_WIDTH = BOARD_HEIGHT = 600
     WHITE_COLOR = (255, 255, 255)
     BLACK_COLOR = (100, 100, 100, 255)
-    HIGHLIGHT_COLOR = (253, 216, 8)
+    HIGHLIGHT_COLOR = (250, 230, 150)
+
+
 
 
     def __init__(self):
@@ -55,9 +57,10 @@ class ChessUI:
     def draw_possible_move(self, cell) -> None:
         #image = self.move_empty if not is_capture else self.move_capture
         image = self.move_empty
-        View_utils.draw_image(self.screen, image, cell)
+        image_rect = image.get_rect(center= cell.center)
+        self.screen.blit(image, image_rect)
 
-    def undraw_possible_moves(self, cell):
+    def draw_empty_cell(self, cell):
         View_utils.redraw_cell(self.screen, cell)
 
     def draw_piece(self, piece, cell) -> None:

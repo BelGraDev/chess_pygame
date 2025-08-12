@@ -1,5 +1,5 @@
 from .Pieces import Pieces
-from Board.Cell_utils import Cell_utils
+from Utils.Cell_utils import Cell_utils
 import pygame
 
 
@@ -19,8 +19,6 @@ class Pawn(Pieces):
             move = self.is_next_possible(cell_name, row - 1, col)
             if move:
                 possible_moves.append(move.next_cell)
-
-        print(possible_moves)
 
         if not self.has_moved:
             next_move = Cell_utils.map_index_to_cell(row - 2, column)

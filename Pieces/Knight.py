@@ -1,5 +1,5 @@
 from Pieces.Pieces import Pieces
-from Board.Cell_utils import Cell_utils
+from Utils.Cell_utils import Cell_utils
 import pygame
 
 class Knight(Pieces):

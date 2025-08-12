@@ -2,7 +2,6 @@ class Cell_utils:
 
     #Since the board is drawn from top to bottom, the row number has to be adjusted accordingly
     def map_cell_to_index(cell_name: str) -> tuple:
-        print(cell_name)
         column: chr = ord(cell_name[0]) - 97
         row: int = int(cell_name[1])
         adj_row = abs(row - 8)
@@ -15,12 +14,7 @@ class Cell_utils:
         return cell_name
 
     def is_cell_empty(cell_name: str, board) -> bool:
-
-        try:
-            board.board[cell_name]
-            return False
-        except KeyError:
-            return True
+        return cell_name not in board.board
 
     def is_white_piece(cell_name:str, board) -> bool:
 
