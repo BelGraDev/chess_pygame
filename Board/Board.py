@@ -4,7 +4,7 @@ from Pieces.Pawn import Pawn
 from Pieces.King import King
 from Pieces.Queen import Queen
 from Pieces.Knight import Knight
-from Board.Move import Move
+from Board.Move import *
 from Board.Board_Cells import Board_cells
 class Board:
 
@@ -44,16 +44,36 @@ class Board:
             "g7": Pawn("b", self),
             "h7": Pawn("b", self)
         }
+        self.turn = "w"
         self.cells = Board_cells(8,8)
 
-    def move(self, prev_cell, next_cell) -> int:
-        prev_piece = self.board[prev_cell]
-        possible_moves = prev_piece.possible_moves(prev_cell)
+    def move(self, prev_cell_name: str, next_cell_name) -> int | None:
+        prev_piece = self.board[prev_cell_name]
+        possible_moves = prev_piece.possible_moves(prev_cell_name)
 
-        move = Move(self, prev_cell, next_cell)
+        move = Move(self, prev_cell_name, next_cell_name)
         
-        if next_cell in possible_moves:
-            self.board[next_cell] = prev_piece
-            del self.board[prev_cell]
+        if next_cell_name in possible_moves:
+            self.board[next_cell_name] = prev_piece
+            del self.board[prev_cell_name]
 
+        elif not Cell_utils.are_teammates(prev_cell_name, next_cell_name, self):
+            return MoveType.NOT_AVAILABLE
+        
         return move.type
+
+    def move_to_cell(self, cell_name: str) -> None:
+        piece = self.board[cell_name]
+        if not piece.has_moved:
+            piece.has_moved = True
+
+        self._switch_turn()
+
+    def _switch_turn(self) -> None:
+        self.turn = "b" if self.turn == "w" else "w"
+
+    def can_color_play(self, cell_name: str) -> bool:
+
+        prev_cell_piece = self.board[cell_name]
+        is_same_turn = prev_cell_piece.type == self.turn
+        return True if is_same_turn else False

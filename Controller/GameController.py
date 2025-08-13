@@ -12,27 +12,17 @@ class GameController:
         self.chessUI.init_board()
         self.chessUI.init_pieces(board)
         self.possible_moves = []
-
-    def selected_cell(self, coord) -> str | None:
-            
-            for row in range(8):
-                for col in range(8):
-                    cell = self.chessUI.cells[row][col]
-                    if(cell.collidepoint(coord)):
-                        return cell.name
-                    
-            return None
     
-    def highlight_cell(self, cell_name) -> None:
+    def _highlight_cell(self, cell_name) -> None:
         piece = self.board.board[cell_name]
         cell = self.cell_highlighted = self.chessUI.get_cell_rect(cell_name)
         self.chessUI.draw_highlight(piece, cell)
 
-    def unhighlight_cell(self, cell) -> None:
+    def _unhighlight_cell(self, cell) -> None:
         self.cell_highlighted = None
         self.chessUI.draw_empty_cell(cell)
 
-    def render_possible_moves(self, cell_name) -> list:
+    def _render_possible_moves(self, cell_name) -> list:
         piece = self.board.board[cell_name]
         self.possible_moves = piece.possible_moves(cell_name)
         for next_cell_name in self.possible_moves:
@@ -40,7 +30,7 @@ class GameController:
             self.chessUI.draw_possible_move(next_cell)
         return self.possible_moves
     
-    def undraw_possible_moves(self, moved_to, possible_moves) -> None: 
+    def _undraw_possible_moves(self, moved_to, possible_moves) -> None: 
         for move in possible_moves:
             if move != moved_to:
                 cell = self.chessUI.get_cell_rect(move)
@@ -54,43 +44,45 @@ class GameController:
     def render_move(self, cell_name) -> None:
         prev_cell = self.cell_highlighted
         if prev_cell:
-            
             move_result = self.board.move(prev_cell.name, cell_name)
             print(move_result)
             match move_result:
 
                 case MoveType.EMPTY_CELL | MoveType.CAPTURE:
-                    self.move_to_cell(cell_name)
-                case MoveType.TEAMMATE:
-                    self.switch_focus(prev_cell, cell_name)
-                    return
-            
-            piece = self.board.board[cell_name]
-            if not piece.has_moved: piece.has_moved = True
-            self.unhighlight_cell(prev_cell)
-            self.undraw_possible_moves(cell_name, self.possible_moves)
+                    self._move_to_cell(cell_name)
+                    self._unhighlight_cell(prev_cell)
+                    self._undraw_possible_moves(cell_name, self.possible_moves)
 
-        
+                case MoveType.TEAMMATE:
+                    self._switch_focus(prev_cell, cell_name)
+                    return
+                
+                case _:
+                    return
         else:
             try:
-                self.highlight_cell(cell_name)
-                self.render_possible_moves(cell_name)
-            except KeyError:
-                print("Clicked empty cell")
+                if not self.board.can_color_play(cell_name): return
 
-    def move_to_cell(self, cell_name) -> None:
+                self._highlight_cell(cell_name)
+                self._render_possible_moves(cell_name)
+            except KeyError:
+                pass
+
+    def _redraw_piece_cell(self, cell_name):
         cell = self.chessUI.get_cell_rect(cell_name) 
         piece = self.board.board[cell_name]
         self.chessUI.draw_replacement_pieces(piece, cell)
 
-    def switch_focus(self, prev_cell, cell_name) -> None:
+    def _move_to_cell(self, cell_name) -> None:
+        self.board.move_to_cell(cell_name)
+        self._redraw_piece_cell(cell_name)
+        
+    def _switch_focus(self, prev_cell, cell_name) -> None:
 
-        self.highlight_cell(cell_name)
-    
-        prev_piece = self.board.board[prev_cell.name]
-        self.chessUI.draw_replacement_pieces(prev_piece, prev_cell)
-        self.undraw_possible_moves(None, self.possible_moves)
-        self.render_possible_moves(cell_name)
+        self._highlight_cell(cell_name)
+        self._redraw_piece_cell(prev_cell.name)
+        self._undraw_possible_moves(None, self.possible_moves)
+        self._render_possible_moves(cell_name)
 
 
 

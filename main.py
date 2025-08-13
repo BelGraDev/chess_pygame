@@ -25,10 +25,9 @@ while True:
            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             coord = pygame.mouse.get_pos()
-            cell = controller.selected_cell(coord)
+            cell = renderer.selected_cell(coord)
             if cell:
                 controller.render_move(cell)
-
 
     pygame.display.update()
     clock.tick(60)

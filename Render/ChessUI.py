@@ -13,16 +13,12 @@ class ChessUI:
     BLACK_COLOR = (100, 100, 100, 255)
     HIGHLIGHT_COLOR = (250, 230, 150)
 
-
-
-
     def __init__(self):
         self.cells = [[], [], [], [], [], [], [], []]
         self.move_empty = pygame.image.load("Pieces/images/move.png")
         self.move_capture = pygame.image.load("Pieces/images/capture.png")
         self.screen = None
 
-    
     def init_board(self) -> None:
         for row in range(8):
             for col in range(8):
@@ -43,6 +39,16 @@ class ChessUI:
         for cell, piece in board.items():
             rect = self.get_cell_rect(cell)
             self.screen.blit(piece.image, rect)
+
+    def selected_cell(self, coord) -> str | None:
+        
+        for row in range(8):
+            for col in range(8):
+                cell = self.cells[row][col]
+                if(cell.collidepoint(coord)):
+                    return cell.name
+                
+        return None
 
     def get_board_size(self) -> tuple:
         width = self.BOARD_WIDTH + self.MARGIN_SIZE * 2

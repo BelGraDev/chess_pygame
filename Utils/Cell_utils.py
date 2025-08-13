@@ -16,7 +16,8 @@ class Cell_utils:
     def is_cell_empty(cell_name: str, board) -> bool:
         return cell_name not in board.board
 
-    def is_white_piece(cell_name:str, board) -> bool:
+    def are_teammates(prev_cell_name: str, next_cell_name:str, board) -> bool:
 
-        piece = board.board[cell_name]
-        return True if piece.type == "w" else False
+        prev_piece = board.board[prev_cell_name]
+        next_piece = board.board[next_cell_name]
+        return False if prev_piece.type != next_piece.type else True
