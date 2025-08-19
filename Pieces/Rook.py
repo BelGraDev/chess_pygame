@@ -13,8 +13,6 @@ class Rook(Pieces):
 
         row, column = Cell_utils.map_cell_to_index(cell_name)
 
-        possible_moves = []
-
         upwards_check = self._check_line(row, column, -1, 0, cell_name)
         downwards_check = self._check_line(row, column, 1, 0, cell_name)
 

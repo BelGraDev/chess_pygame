@@ -3,6 +3,7 @@ from enum import Enum
 
 class MoveType(Enum):
 
+    CHECK_MATE = -2
     NOT_AVAILABLE = -1
     EMPTY_CELL = 0
     CAPTURE = 1
@@ -21,7 +22,7 @@ class Move:
         if Cell_utils.is_cell_empty(next_cell_name, self.board):
             return MoveType.EMPTY_CELL
         
-        elif Cell_utils.are_teammates(prev_cell_name, next_cell_name, self.board):
+        elif Cell_utils.are_teammates(prev_cell_name, next_cell_name, self.board.board):
             return MoveType.TEAMMATE
         else:
             return MoveType.CAPTURE

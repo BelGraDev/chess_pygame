@@ -13,8 +13,6 @@ class Bishop(Pieces):
 
         row, column = Cell_utils.map_cell_to_index(cell_name)
 
-        possible_moves = []
-
         upper_left_diagonal = self._check_line(row, column, -1, -1, cell_name)
         upper_right_diagonal = self._check_line(row, column, -1, 1, cell_name)
 

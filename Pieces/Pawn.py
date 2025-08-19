@@ -39,7 +39,7 @@ class Pawn(Pieces):
     def _two_steps_move(self, cell_name, next_row, column) -> str | None:
 
         move = self.is_next_possible(cell_name, next_row, column)
-        if move.type == MoveType.EMPTY_CELL:
+        if move and move.type == MoveType.EMPTY_CELL:
             return move.next_cell
             
         return None
