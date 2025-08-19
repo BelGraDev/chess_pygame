@@ -9,8 +9,9 @@ class ChessUI:
     CELL_SIZE = 75
     MARGIN_SIZE = 25
     BOARD_WIDTH = BOARD_HEIGHT = 600
+    BORDER_COLOR = (0, 0, 0)
     WHITE_COLOR = (255, 255, 255)
-    BLACK_COLOR = (100, 100, 100, 255)
+    GREY_COLOR = (100, 100, 100, 255)
     HIGHLIGHT_COLOR = (250, 230, 150)
 
     def __init__(self):
@@ -26,7 +27,7 @@ class ChessUI:
                 x = self.MARGIN_SIZE + col * self.CELL_SIZE
                 y = self.MARGIN_SIZE + row * self.CELL_SIZE
                 cell_name = Cell_utils.map_index_to_cell(row, col)
-                color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.BLACK_COLOR       
+                color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.GREY_COLOR       
                 cell = Cell((x, y), cell_name, color)
                 pygame.draw.rect(self.screen, color, cell)
                 self.cells[row].append(cell)
@@ -34,7 +35,7 @@ class ChessUI:
 
     def render_border(self):
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
-        pygame.draw.rect(self.screen, self.WHITE_COLOR, border,  1)
+        pygame.draw.rect(self.screen, self.BORDER_COLOR, border,  2)
         
     def init_pieces(self, board):
 
