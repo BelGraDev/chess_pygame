@@ -8,7 +8,7 @@ class Knight(Pieces):
     def __init__(self, type, board) -> None:
 
         super().__init__(type, board)
-        self.image = pygame.image.load(f"Pieces/images/{type}_knight.png")
+        self.image = pygame.image.load(f"Pieces/images/{type}_knight.png").convert_alpha()
 
     def possible_moves(self, cell_name) -> list:
 

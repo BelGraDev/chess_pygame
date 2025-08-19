@@ -9,7 +9,7 @@ class Pawn(Pieces):
     def __init__(self, type, board) -> None:
 
         super().__init__(type, board)
-        self.image = pygame.image.load(f"Pieces/images/{type}_pawn.png")
+        self.image = pygame.image.load(f"Pieces/images/{type}_pawn.png").convert_alpha()
     
     def possible_moves(self, cell_name) -> list:
 

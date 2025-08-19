@@ -13,7 +13,7 @@ class Board_Utils:
     
     def restore_last_state(board: dict, prev_piece, original_next_piece, prev_cell_name: str, next_cell_name: str) -> None:
         board[prev_cell_name] = prev_piece
-        if original_next_piece:
+        if original_next_piece is not None:
             board[next_cell_name] = original_next_piece
         else:
             del board[next_cell_name]

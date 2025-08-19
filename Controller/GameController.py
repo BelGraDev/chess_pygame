@@ -45,7 +45,6 @@ class GameController:
         prev_cell = self.cell_highlighted
         if prev_cell:
             move_result = self.board.move(prev_cell.name, cell_name)
-            print(move_result)
             match move_result:
 
                 case MoveType.EMPTY_CELL | MoveType.CAPTURE:

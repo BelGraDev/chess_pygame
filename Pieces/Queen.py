@@ -9,7 +9,7 @@ class Queen(Rook, Bishop):
     def __init__(self, type, board) -> None:
 
         super().__init__(type, board)
-        self.image = pygame.image.load(f"Pieces/images/{type}_queen.png")
+        self.image = pygame.image.load(f"Pieces/images/{type}_queen.png").convert_alpha()
 
     def possible_moves(self, cell_name):
         diagonal_moves = Bishop.possible_moves(self, cell_name)

@@ -7,7 +7,7 @@ class Rook(Pieces):
     def __init__(self, type, board) -> None:
 
         super().__init__(type, board)
-        self.image = pygame.image.load(f"Pieces/images/{type}_rook.png")
+        self.image = pygame.image.load(f"Pieces/images/{type}_rook.png").convert_alpha()
 
     def possible_moves(self, cell_name) -> list:
 

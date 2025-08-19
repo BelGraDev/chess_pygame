@@ -48,7 +48,7 @@ class ChessUI:
                 
         return None
     def render_mate(self, turn) -> None:
-        image = pygame.image.load(f"Render/images/{turn}_mate.png")
+        image = pygame.image.load(f"Render/images/{turn}_mate.png").convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
     def get_board_size(self) -> tuple:
@@ -62,7 +62,7 @@ class ChessUI:
         return cell
     
     def draw_possible_move(self, cell) -> None:
-        image = pygame.image.load("Pieces/images/move.png")
+        image = pygame.image.load("Render/images/move.png").convert_alpha()
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
 

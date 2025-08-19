@@ -6,14 +6,16 @@ from Controller.GameController import GameController
 
 pygame.init()
 
-board = Board()
 renderer = ChessUI()
-controller = GameController(board, renderer)
 
 size = renderer.get_board_size()
 screen = pygame.display.set_mode(size)
 screen.fill((137,81,41))
 renderer.screen = screen
+
+board = Board()
+controller = GameController(board, renderer)
+
 controller.init_board_pieces()
 
 clock = pygame.time.Clock()
@@ -24,10 +26,11 @@ while True:
         if event.type == pygame.QUIT:
            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            coord = pygame.mouse.get_pos()
-            cell = renderer.selected_cell(coord)
-            if cell:
-                controller.render_move(cell)
+            if not board.is_check_mate:
+                coord = pygame.mouse.get_pos()
+                cell = renderer.selected_cell(coord)
+                if cell:
+                    controller.render_move(cell)
 
     pygame.display.update()
     clock.tick(60)

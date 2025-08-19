@@ -47,12 +47,13 @@ class Board:
         }
         self.turn = "w"
         self.cells = Board_cells(8,8)
+        self.is_check_mate = False
 
     def move(self, prev_cell_name: str, next_cell_name) -> int:
 
         move = Move(self, prev_cell_name, next_cell_name)
 
-        if move.type != MoveType.TEAMMATE:
+        if move.type is not MoveType.TEAMMATE:
             if not self._is_valid_move(prev_cell_name, next_cell_name):
                 return MoveType.NOT_AVAILABLE
             else: 
@@ -75,8 +76,7 @@ class Board:
     def can_color_play(self, cell_name: str) -> bool:
 
         prev_cell_piece = self.board[cell_name]
-        is_same_turn = prev_cell_piece.type == self.turn
-        return True if is_same_turn else False
+        return prev_cell_piece.type == self.turn
 
     def _is_valid_move(self, prev_cell_name: str, next_cell_name: str) -> bool:
 
@@ -90,6 +90,7 @@ class Board:
         else:
             return False
        
+    #Can be done backtracking by the king position, thus it would be more efficient
     def _is_king_in_check(self, king_color: str) -> bool:
 
         king_cell = None
@@ -106,14 +107,13 @@ class Board:
         return False
 
     def _opponent_under_check_mate(self) -> bool:
-        opponent_color = "w" if self.turn == "b" else "b"
-        for cell_name, piece in self.board.items():
+        opponent_color = "b" if self.turn == "w" else "w"
+        for cell_name, piece in list(self.board.items()):
             if piece.type == opponent_color:
                 possible_moves = piece.possible_moves(cell_name)
                 for move in possible_moves:
                     is_valid = self._is_valid_move(cell_name, move)
                     if is_valid:
-                        print("Not mate") 
                         return False
-        print("CHECK MATE")
+        self.is_check_mate = True
         return True
