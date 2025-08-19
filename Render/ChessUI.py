@@ -15,8 +15,6 @@ class ChessUI:
 
     def __init__(self):
         self.cells = [[], [], [], [], [], [], [], []]
-        self.move_empty = pygame.image.load("Pieces/images/move.png")
-        self.move_capture = pygame.image.load("Pieces/images/capture.png")
         self.screen = None
 
     def init_board(self) -> None:
@@ -49,6 +47,9 @@ class ChessUI:
                     return cell.name
                 
         return None
+    def render_mate(self, turn) -> None:
+        image = pygame.image.load(f"Render/images/{turn}_mate.png")
+        self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
     def get_board_size(self) -> tuple:
         width = self.BOARD_WIDTH + self.MARGIN_SIZE * 2
@@ -61,8 +62,7 @@ class ChessUI:
         return cell
     
     def draw_possible_move(self, cell) -> None:
-        #image = self.move_empty if not is_capture else self.move_capture
-        image = self.move_empty
+        image = pygame.image.load("Pieces/images/move.png")
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
 

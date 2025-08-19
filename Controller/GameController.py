@@ -48,13 +48,17 @@ class GameController:
             print(move_result)
             match move_result:
 
-                case MoveType.EMPTY_CELL | MoveType.CAPTURE | MoveType.CHECK_MATE:
+                case MoveType.EMPTY_CELL | MoveType.CAPTURE:
                     self._move_to_cell(cell_name)
                     self._unhighlight_cell(prev_cell)
                     self._undraw_possible_moves(cell_name, self.possible_moves)
 
-                    if move_result == MoveType.CHECK_MATE:
-                        pass
+                case MoveType.CHECK_MATE:
+                    mate_color = self.board.turn
+                    self._move_to_cell(cell_name)
+                    self._unhighlight_cell(prev_cell)
+                    self._undraw_possible_moves(cell_name, self.possible_moves)
+                    self.chessUI.render_mate(mate_color)
 
                 case MoveType.TEAMMATE:
                     self._switch_focus(prev_cell, cell_name)
