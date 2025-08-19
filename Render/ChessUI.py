@@ -18,6 +18,8 @@ class ChessUI:
         self.screen = None
 
     def init_board(self) -> None:
+        background = pygame.image.load("Render/images/background2.png")
+        self.screen.blit(background, (0,0))
         for row in range(8):
             for col in range(8):
 
@@ -28,7 +30,9 @@ class ChessUI:
                 cell = Cell((x, y), cell_name, color)
                 pygame.draw.rect(self.screen, color, cell)
                 self.cells[row].append(cell)
+                self.render_border()
 
+    def render_border(self):
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
         pygame.draw.rect(self.screen, self.WHITE_COLOR, border,  1)
         

@@ -10,7 +10,6 @@ renderer = ChessUI()
 
 size = renderer.get_board_size()
 screen = pygame.display.set_mode(size)
-screen.fill((137,81,41))
 renderer.screen = screen
 
 board = Board()
@@ -31,6 +30,7 @@ while True:
                 cell = renderer.selected_cell(coord)
                 if cell:
                     controller.render_move(cell)
+                    renderer.render_border()
 
     pygame.display.update()
     clock.tick(60)

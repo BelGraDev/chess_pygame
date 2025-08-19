@@ -27,6 +27,9 @@ class King(Pieces):
 
         return possible_moves
     
+    def castle(self, cell_name):
+        pass
+    
     def is_on_check(self, cell_name):
 
         check_horizontal = Rook.possible_moves(self, cell_name)
