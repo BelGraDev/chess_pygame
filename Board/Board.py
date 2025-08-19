@@ -45,6 +45,8 @@ class Board:
             "g7": Pawn("b", self),
             "h7": Pawn("b", self)
         }
+        self.w_king_cell = "e1"
+        self.b_king_cell = "e8"
         self.turn = "w"
         self.cells = Board_cells(8,8)
         self.is_check_mate = False
@@ -58,6 +60,8 @@ class Board:
                 return MoveType.NOT_AVAILABLE
             else: 
                 Board_Utils.move_piece_in_board(self.board, prev_cell_name, next_cell_name)
+                self._update_king_cell(next_cell_name, self.turn)
+
                 if self._opponent_under_check_mate():
                     return MoveType.CHECK_MATE
                 
@@ -65,13 +69,11 @@ class Board:
 
     def move_to_cell(self, cell_name: str) -> None:
         piece = self.board[cell_name]
+
         if not piece.has_moved:
             piece.has_moved = True
 
         self._switch_turn()
-
-    def _switch_turn(self) -> None:
-        self.turn = "b" if self.turn == "w" else "w"
 
     def can_color_play(self, cell_name: str) -> bool:
 
@@ -84,27 +86,21 @@ class Board:
         prev_piece = Board_Utils.move_piece_in_board(self.board, prev_cell_name, next_cell_name)
 
         if prev_piece is not None:
-            king_is_in_check = self._is_king_in_check(prev_piece.type)
+            prev_piece_color = prev_piece.type
+            self._update_king_cell(next_cell_name, prev_piece_color)
+
+            king_is_in_check = self._is_king_in_check(prev_piece_color)
             Board_Utils.restore_last_state(self.board, prev_piece, original_next_piece, prev_cell_name, next_cell_name)
+            
+            self._update_king_cell(prev_cell_name, prev_piece_color)
             return not king_is_in_check
         else:
             return False
        
-    #Can be done backtracking by the king position, thus it would be more efficient
     def _is_king_in_check(self, king_color: str) -> bool:
-
-        king_cell = None
-        for cell, piece in self.board.items():
-            if piece.__class__.__name__ == "King" and piece.type == king_color:
-                king_cell = cell
-                break
-        opponent_color = "b" if king_color == "w" else "w"
-        for cell, piece in self.board.items():
-
-            if piece.type == opponent_color:
-                if king_cell in piece.possible_moves(cell):
-                    return True 
-        return False
+        king_cell = self.w_king_cell if king_color == "w" else self.b_king_cell
+        king = self.board[king_cell]
+        return king.is_on_check(king_cell)
 
     def _opponent_under_check_mate(self) -> bool:
         opponent_color = "b" if self.turn == "w" else "w"
@@ -117,3 +113,14 @@ class Board:
                         return False
         self.is_check_mate = True
         return True
+    
+    def _update_king_cell(self, cell_name: str, king_color) -> None:
+        piece = self.board[cell_name]
+        if isinstance(piece, King):
+            if king_color == "w":
+                self.w_king_cell = cell_name
+            else:
+                self.b_king_cell = cell_name
+                
+    def _switch_turn(self) -> None:
+        self.turn = "b" if self.turn == "w" else "w"
