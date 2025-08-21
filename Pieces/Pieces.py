@@ -11,7 +11,6 @@ class Pieces(ABC, pygame.Rect):
         self.board = board
         self.has_moved = False
         
-
     def is_next_possible(self, prev_cell_name, row, col):
 
         try:

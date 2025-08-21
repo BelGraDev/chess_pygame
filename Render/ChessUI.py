@@ -40,7 +40,7 @@ class ChessUI:
     def init_pieces(self, board):
 
         for cell, piece in board.items():
-            rect = self.get_cell_rect(cell)
+            rect = self._get_cell_rect(cell)
             self.screen.blit(piece.image, rect)
 
     def selected_cell(self, coord) -> str | None:
@@ -61,25 +61,29 @@ class ChessUI:
         height = self.BOARD_HEIGHT + self.MARGIN_SIZE * 2
         return width, height
     
-    def get_cell_rect(self, cell_name):
+    def _get_cell_rect(self, cell_name):
         row, col = Cell_utils.map_cell_to_index(cell_name)
         cell = self.cells[row][col]
         return cell
     
-    def draw_possible_move(self, cell) -> None:
+    def draw_possible_move(self, cell_name) -> None:
         image = pygame.image.load("Render/images/move.png").convert_alpha()
+        cell = self._get_cell_rect(cell_name)
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
 
-    def draw_empty_cell(self, cell):
+    def draw_empty_cell(self, cell_name):
+        cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell(self.screen, cell)
 
     def draw_piece(self, piece, cell) -> None:
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
         
-    def draw_highlight(self, piece, cell) -> None:
+    def draw_highlight(self, piece, cell_name) -> None:
+        cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
     
-    def draw_replacement_pieces(self, piece, cell) -> None:
+    def draw_replacement_pieces(self, piece, cell_name) -> None:
+        cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
         

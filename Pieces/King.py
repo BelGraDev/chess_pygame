@@ -7,7 +7,6 @@ import pygame
 
 class King(Pieces):
     
-    
     def __init__(self, type, board) -> None:
 
         super().__init__(type, board)
@@ -25,10 +24,46 @@ class King(Pieces):
                 if move:
                     possible_moves.append(move.next_cell)
 
+        possible_moves = possible_moves + self.castle_moves(row, column)
         return possible_moves
     
-    def castle(self, cell_name):
-        pass
+    def castle_moves(self, row, col):
+        return self._castle_move_left(row, col) + self._castle_move_right(row, col)
+
+    def _castle_move_right(self, row, col):
+        castle_moves = []
+        if not self.has_moved:
+
+            rook_cell = Cell_utils.map_index_to_cell(row, col + 3)
+            if Cell_utils.is_cell_empty(rook_cell, self.board) or self.board.board[rook_cell].has_moved:
+                return castle_moves
+            
+            c = col + 1
+            while c <= col + 2:
+                cell_name = Cell_utils.map_index_to_cell(row, c)
+                if not Cell_utils.is_cell_empty(cell_name, self.board): break
+                c += 1
+            if c > col + 2:
+                castle_moves.append(cell_name) 
+        return castle_moves  
+    
+    def _castle_move_left(self, row, col):  
+        castle_moves = []
+        if not self.has_moved:
+
+            rook_cell = Cell_utils.map_index_to_cell(row, col - 4)
+            if Cell_utils.is_cell_empty(rook_cell, self.board) or self.board.board[rook_cell].has_moved:
+                return castle_moves
+            
+            c = col - 1
+            while c >= col - 3:
+                cell_name = Cell_utils.map_index_to_cell(row, c)
+                if not Cell_utils.is_cell_empty(cell_name, self.board): break
+                c -= 1
+            if c < col - 3:
+                castle_cell = Cell_utils.map_index_to_cell(row, col - 2)
+                castle_moves.append(castle_cell)
+        return castle_moves
     
     def is_on_check(self, cell_name):
 
@@ -49,7 +84,6 @@ class King(Pieces):
             return True
         
         return False
-    
     
     def _inspect_moves(self, possible_check, piece1, piece2 = None):
         for move_cell in possible_check:

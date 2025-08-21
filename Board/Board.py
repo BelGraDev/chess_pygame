@@ -59,7 +59,13 @@ class Board:
             if not self._is_valid_move(prev_cell_name, next_cell_name):
                 return MoveType.NOT_AVAILABLE
             else: 
-                Board_Utils.move_piece_in_board(self.board, prev_cell_name, next_cell_name)
+
+                if self._want_to_castle(prev_cell_name, next_cell_name):
+                    self._castle(prev_cell_name, next_cell_name)
+                    move.type = MoveType.CASTLE
+                else:
+                    Board_Utils.move_piece_in_board(self.board, prev_cell_name, next_cell_name)
+
                 self._update_king_cell(next_cell_name, self.turn)
 
                 if self._opponent_under_check_mate():
@@ -79,7 +85,8 @@ class Board:
 
         prev_cell_piece = self.board[cell_name]
         return prev_cell_piece.type == self.turn
-
+    
+    #Move validation and check related methods
     def _is_valid_move(self, prev_cell_name: str, next_cell_name: str) -> bool:
 
         original_next_piece = self.board.get(next_cell_name)
@@ -96,7 +103,17 @@ class Board:
             return not king_is_in_check
         else:
             return False
-       
+    
+    def _want_to_castle(self, prev_cell_name: str, next_cell_name: str) -> bool:
+        prev_piece = self.board[prev_cell_name]
+        if isinstance(prev_piece, King):
+            possible_moves = prev_piece.possible_moves(prev_cell_name)
+            if next_cell_name in possible_moves:
+                prev_row, prev_col = Cell_utils.map_cell_to_index(prev_cell_name)
+                next_row, next_col = Cell_utils.map_cell_to_index(next_cell_name)
+                return abs(prev_col - next_col) == 2
+        return False
+
     def _is_king_in_check(self, king_color: str) -> bool:
         king_cell = self.w_king_cell if king_color == "w" else self.b_king_cell
         king = self.board[king_cell]
@@ -121,6 +138,32 @@ class Board:
                 self.w_king_cell = cell_name
             else:
                 self.b_king_cell = cell_name
-                
+
+    #End move validation and check related methods
+    #Castle related methods
+    def _castle(self, prev_cell: str, next_cell: str) -> None:
+        king = self.board[prev_cell]
+        self.board[next_cell] = king
+        del self.board[prev_cell]
+
+        row, col = Cell_utils.map_cell_to_index(next_cell)
+
+        rook1_cell_name = Cell_utils.map_index_to_cell(row, col + 1)
+        next_rook_cell_name = Cell_utils.map_index_to_cell(row, col - 1)
+        if self._castle_rook(rook1_cell_name, next_rook_cell_name): return
+
+        rook2_cell_name = Cell_utils.map_index_to_cell(row, col - 2)
+        next_rook_cell_name = Cell_utils.map_index_to_cell(row, col + 1)
+        self._castle_rook(rook2_cell_name, next_rook_cell_name)
+
+    def _castle_rook(self, rook_cell_name: str, next_rook_cell_name: str) -> bool:
+        rook = self.board.get(rook_cell_name)
+        if rook is not None and not rook.has_moved:
+            self.board[next_rook_cell_name] = rook
+            del self.board[rook_cell_name]
+            return True
+        return False
+    
+    #End castle related methods
     def _switch_turn(self) -> None:
         self.turn = "b" if self.turn == "w" else "w"

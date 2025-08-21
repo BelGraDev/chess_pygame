@@ -8,6 +8,7 @@ class MoveType(Enum):
     EMPTY_CELL = 0
     CAPTURE = 1
     TEAMMATE = 2
+    CASTLE = 3
 
 class Move:
 
