@@ -65,6 +65,8 @@ class Board:
                     move.type = MoveType.CASTLE
                 else:
                     Board_Utils.move_piece_in_board(self.board, prev_cell_name, next_cell_name)
+                    if self.pawn_ascension(next_cell_name):
+                        return MoveType.PAWN_ASCENSION
 
                 self._update_king_cell(next_cell_name, self.turn)
 
@@ -109,8 +111,8 @@ class Board:
         if isinstance(prev_piece, King):
             possible_moves = prev_piece.possible_moves(prev_cell_name)
             if next_cell_name in possible_moves:
-                prev_row, prev_col = Cell_utils.map_cell_to_index(prev_cell_name)
-                next_row, next_col = Cell_utils.map_cell_to_index(next_cell_name)
+                prev_col = Cell_utils.map_cell_to_index(prev_cell_name)[1]
+                next_col = Cell_utils.map_cell_to_index(next_cell_name)[1]
                 return abs(prev_col - next_col) == 2
         return False
 
@@ -140,6 +142,21 @@ class Board:
                 self.b_king_cell = cell_name
 
     #End move validation and check related methods
+    #Pawn ascension related methods
+    def ascension_pieces(self):
+        return [Queen(self.turn, self), Knight(self.turn, self), Rook(self.turn, self), Bishop(self.turn, self)]
+    
+    def complete_promotion(self, cell_name, piece):
+        self.board[cell_name] = piece
+    
+    def pawn_ascension(self, cell_name):
+        row = Cell_utils.map_cell_to_index(cell_name)[0]
+        piece = self.board[cell_name]
+        is_on_top = row == 7 or row == 0
+        if isinstance(piece, Pawn) and is_on_top:
+            return True
+        return False
+    
     #Castle related methods
     def _castle(self, prev_cell: str, next_cell: str) -> None:
         king = self.board[prev_cell]

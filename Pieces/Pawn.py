@@ -30,17 +30,20 @@ class Pawn(Pieces):
                 possible_moves.append(move.next_cell)
 
         if not self.has_moved:
-            next_row_cell = Cell_utils.map_index_to_cell(row - 1 * direction, column)
-            if Cell_utils.is_cell_empty(next_row_cell, self.board):
-                first_move = self._two_steps_move(cell_name, row - 2 * direction, column)
-                if first_move:
-                    possible_moves.append(first_move)  
+            first_move = self._two_steps_move(cell_name, row - 1 * direction, row - 2 * direction, column)
+            if first_move:
+                possible_moves.append(first_move)  
 
         return possible_moves
     
-    def _two_steps_move(self, cell_name, next_row, column) -> str | None:
-        move = self.is_next_possible(cell_name, next_row, column)
-        if move and move.type == MoveType.EMPTY_CELL:
-            return move.next_cell
+    def _two_steps_move(self, cell_name, one_step_row, two_step_row, column) -> str | None:
+
+        move_one_step = self.is_next_possible(cell_name, one_step_row, column)
+        if move_one_step and move_one_step.type is MoveType.EMPTY_CELL:
+
+            move = self.is_next_possible(cell_name, two_step_row, column)
+            if move and move.type == MoveType.EMPTY_CELL:
+                return move.next_cell
             
         return None
+    

@@ -13,6 +13,7 @@ class ChessUI:
     WHITE_COLOR = (255, 255, 255)
     GREY_COLOR = (100, 100, 100, 255)
     HIGHLIGHT_COLOR = (250, 230, 150)
+    ASCENSION_CELL_COLOR = (166, 123, 91)
 
     def __init__(self):
         self.cells = [[], [], [], [], [], [], [], []]
@@ -56,6 +57,15 @@ class ChessUI:
         image = pygame.image.load(f"Render/images/{turn}_mate.png").convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
+    def render_pawn_ascension(self, cell_name, turn, pieces):
+        row, col = Cell_utils.map_cell_to_index(cell_name)
+        direction = 1 if turn == "w" else -1
+        self.ascension_cells = []
+        for r, piece in zip(range(row, row + (5 * direction), direction), pieces):
+            cell_name = Cell_utils.map_index_to_cell(r, col)
+            self.ascension_cells.append(cell_name)
+            self.draw_ascension_cell(piece, cell_name)
+
     def get_board_size(self) -> tuple:
         width = self.BOARD_WIDTH + self.MARGIN_SIZE * 2
         height = self.BOARD_HEIGHT + self.MARGIN_SIZE * 2
@@ -86,4 +96,7 @@ class ChessUI:
     def draw_replacement_pieces(self, piece, cell_name) -> None:
         cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
-        
+    
+    def draw_ascension_cell(self, piece, cell_name) -> None:
+        cell = self._get_cell_rect(cell_name)
+        View_utils.redraw_cell_piece(self.screen, self.ASCENSION_CELL_COLOR, piece, cell)

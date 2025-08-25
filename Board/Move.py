@@ -9,6 +9,7 @@ class MoveType(Enum):
     CAPTURE = 1
     TEAMMATE = 2
     CASTLE = 3
+    PAWN_ASCENSION = 4
 
 class Move:
 
