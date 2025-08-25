@@ -70,6 +70,7 @@ class King(Pieces):
         check_horizontal = Rook.possible_moves(self, cell_name)
         check_diagonal = Bishop.possible_moves(self, cell_name)
         check_knight = Knight.possible_moves(self, cell_name)
+        check_king = self.possible_moves(cell_name)
 
         if self._inspect_moves(check_knight, "Knight"):
             return True
@@ -79,6 +80,9 @@ class King(Pieces):
 
         if self._inspect_moves(check_diagonal, "Queen", "Bishop"):
             return True
+        
+        if self._inspect_moves(check_king, "King"):
+             return True
         
         if self._inspect_pawn(cell_name):
             return True
@@ -94,7 +98,6 @@ class King(Pieces):
         return False
     
     def _inspect_pawn(self, cell_name):
-
         row, col = Cell_utils.map_cell_to_index(cell_name)
         direction = 1 if self.type == "b" else -1
         check_pawn_offsets = [(1 * direction, 1), (1 * direction, -1)]
