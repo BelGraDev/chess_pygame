@@ -3,6 +3,7 @@ from Utils.Cell_utils import Cell_utils
 
 class GameController:
     def __init__(self, board, chessUI):
+        self.board_status = board.board_status
         self.board = board
         self.chessUI = chessUI
         self.cell_highlighted = None
@@ -10,7 +11,7 @@ class GameController:
         self.ascension_pieces = None
         
     def init_board_pieces(self) -> None:
-        board = self.board.board
+        board = self.board_status.board
         self.chessUI.init_board()
         self.chessUI.init_pieces(board)
         self.possible_moves = []
@@ -29,7 +30,7 @@ class GameController:
                         self._move(prev_cell_name, cell_name)
 
                     case MoveType.CHECK_MATE:
-                        mate_color = self.board.turn
+                        mate_color = self.board_status.turn
                         self._move(prev_cell_name, cell_name)
                         self.chessUI.render_mate(mate_color)
 
@@ -66,7 +67,7 @@ class GameController:
         self._redraw_list_cells(next_cell_name, self.possible_moves)
     
     def _highlight_cell(self, cell_name: str) -> None:
-        piece = self.board.board[cell_name]
+        piece = self.board_status.board[cell_name]
         self.cell_highlighted = cell_name
         self.chessUI.draw_highlight(piece, cell_name)
 
@@ -75,7 +76,7 @@ class GameController:
         self.chessUI.draw_empty_cell(cell_name)
 
     def _render_possible_moves(self, cell_name: str) -> list:
-        piece = self.board.board[cell_name]
+        piece = self.board_status.board[cell_name]
         self.possible_moves = piece.possible_moves(cell_name)
         for next_cell_name in self.possible_moves:
             self.chessUI.draw_possible_move(next_cell_name)
@@ -84,31 +85,31 @@ class GameController:
     def _redraw_list_cells(self, moved_to: str, possible_moves: list) -> None: 
         for move in possible_moves:
             if move != moved_to:                
-                if Cell_utils.is_cell_empty(move, self.board):
+                if Cell_utils.is_cell_empty(move, self.board_status):
                     self.chessUI.draw_empty_cell(move)
                 else:
-                    piece = self.board.board.get(move)
+                    piece = self.board_status.board.get(move)
                     self.chessUI.draw_replacement_pieces(piece, move)
 
     def _render_castle(self, cell_name: str) -> None:
         row, col = Cell_utils.map_cell_to_index(cell_name)
 
         rook1_cell_name = Cell_utils.map_index_to_cell(row, col + 1)
-        if self.board.board.get(rook1_cell_name) is None:
+        if self.board_status.board.get(rook1_cell_name) is None:
             self.chessUI.draw_empty_cell(rook1_cell_name)
 
         rook2_cell_name = Cell_utils.map_index_to_cell(row, col - 2)
-        if self.board.board.get(rook2_cell_name) is None:
+        if self.board_status.board.get(rook2_cell_name) is None:
             self.chessUI.draw_empty_cell(rook2_cell_name)
 
     def _render_passant_kill(self, cell_name):
         row, col = Cell_utils.map_cell_to_index(cell_name)
-        direction = 1 if self.board.turn == "w" else -1
+        direction = 1 if self.board_status.turn == "w" else -1
         passant_cell = Cell_utils.map_index_to_cell(row + direction, col)
         self.chessUI.draw_empty_cell(passant_cell)
 
     def _redraw_piece_cell(self, cell_name: str) -> None:
-        piece = self.board.board[cell_name]
+        piece = self.board_status.board[cell_name]
         self.chessUI.draw_replacement_pieces(piece, cell_name)
 
     def _move_to_cell(self, cell_name: str) -> None:
@@ -118,7 +119,7 @@ class GameController:
     def _ascend_pawn(self, prev_cell_name, cell_name):
         self.pawn_ascending = True
         self.ascension_pieces = self.board.ascension_pieces()
-        self.chessUI.render_pawn_ascension(cell_name, self.board.turn, self.ascension_pieces)
+        self.chessUI.render_pawn_ascension(cell_name, self.board_status.turn, self.ascension_pieces)
         self._unhighlight_cell(prev_cell_name)
         self._redraw_list_cells(cell_name, self.possible_moves)
 

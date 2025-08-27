@@ -25,7 +25,7 @@ while True:
         if event.type == pygame.QUIT:
            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if not board.is_check_mate:
+            if not board.board_status.is_check_mate:
                 coord = pygame.mouse.get_pos()
                 cell = renderer.selected_cell(coord)
                 if cell:
