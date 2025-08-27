@@ -16,8 +16,14 @@ class Cell_utils:
     def is_cell_empty(cell_name: str, board) -> bool:
         return cell_name not in board.board
 
-    def are_teammates(prev_cell_name: str, next_cell_name: str, board) -> bool:
+    def are_teammates(prev_cell_name: str, next_cell_name: str, board: dict) -> bool:
 
         prev_piece = board[prev_cell_name]
         next_piece = board[next_cell_name]
         return False if prev_piece.type != next_piece.type else True
+    
+    def get_passant_cell(cell_name: str, turn: str):
+        row, col = Cell_utils.map_cell_to_index(cell_name)
+        direction = 1 if turn == "w" else -1
+        passant_cell = Cell_utils.map_index_to_cell(row + direction, col)
+        return passant_cell

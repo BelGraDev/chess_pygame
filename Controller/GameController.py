@@ -16,8 +16,11 @@ class GameController:
         self.possible_moves = []
 
     def render_move(self, cell_name: str) -> None:
+
         if not self.pawn_ascending:
+
             prev_cell_name = self.cell_highlighted
+
             if prev_cell_name:
                 move_result = self.board.move(prev_cell_name, cell_name)
                 match move_result:
@@ -38,7 +41,11 @@ class GameController:
                         self._render_castle(cell_name)
 
                     case MoveType.PAWN_ASCENSION:
-                        self._ascend_pawn(prev_cell_name, cell_name)
+                        self._ascend_pawn(prev_cell_name, cell_name)        
+
+                    case MoveType.PASSANT_PAWN:
+                        self._render_passant_kill(cell_name)
+                        self._move(prev_cell_name, cell_name)
 
                     case _:
                         return
@@ -93,6 +100,12 @@ class GameController:
         rook2_cell_name = Cell_utils.map_index_to_cell(row, col - 2)
         if self.board.board.get(rook2_cell_name) is None:
             self.chessUI.draw_empty_cell(rook2_cell_name)
+
+    def _render_passant_kill(self, cell_name):
+        row, col = Cell_utils.map_cell_to_index(cell_name)
+        direction = 1 if self.board.turn == "w" else -1
+        passant_cell = Cell_utils.map_index_to_cell(row + direction, col)
+        self.chessUI.draw_empty_cell(passant_cell)
 
     def _redraw_piece_cell(self, cell_name: str) -> None:
         piece = self.board.board[cell_name]

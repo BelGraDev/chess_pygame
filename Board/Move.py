@@ -10,16 +10,17 @@ class MoveType(Enum):
     TEAMMATE = 2
     CASTLE = 3
     PAWN_ASCENSION = 4
+    PASSANT_PAWN = 5
 
 class Move:
 
-    def __init__(self, board, prev_cell_name, next_cell_name):
+    def __init__(self, board, prev_cell_name: str, next_cell_name: str):
         self.board = board
         self.prev_cell = prev_cell_name
         self.next_cell = next_cell_name
         self.type = self._move_type(prev_cell_name, next_cell_name)
 
-    def _move_type(self, prev_cell_name, next_cell_name) -> int:
+    def _move_type(self, prev_cell_name: str, next_cell_name: str) -> int:
 
         if Cell_utils.is_cell_empty(next_cell_name, self.board):
             return MoveType.EMPTY_CELL
