@@ -1,36 +1,33 @@
 import pygame
 import sys
-from Board.Board import Board
-from Render.ChessUI import ChessUI
-from Controller.GameController import GameController
+from Render.ChessMenu import *
+from GameModes.PvpMode import PvpMode
 
 pygame.init()
 
-renderer = ChessUI()
+SCREEN_WIDTH = SCREEN_HEIGHT = 650
 
-size = renderer.get_board_size()
-screen = pygame.display.set_mode(size)
-renderer.screen = screen
-
-board = Board()
-controller = GameController(board, renderer)
-
-controller.init_board_pieces()
-
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+ui = ChessMenu(screen)
+ui.render_menu()
+mode = None
 clock = pygame.time.Clock()
-
 while True:
     for event in pygame.event.get():
-
         if event.type == pygame.QUIT:
-           sys.exit()
+            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if not board.board_status.is_check_mate:
-                coord = pygame.mouse.get_pos()
-                cell = renderer.selected_cell(coord)
-                if cell:
-                    controller.render_move(cell)
-                    renderer.render_border()
+            coord = pygame.mouse.get_pos()
+            if mode is None:
+                type = ui.button_clicked(coord)
+                match type:
+                    case ChessButton.PLAY_BUTTON:
+                        mode = PvpMode(screen)
+                        mode.init_mode()
+                    case _:
+                        pass
+            else:
+                mode.play(coord)
 
     pygame.display.update()
     clock.tick(60)

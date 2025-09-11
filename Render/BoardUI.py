@@ -1,10 +1,10 @@
 from Render.Cell import Cell
 from Utils.Cell_utils import Cell_utils
 from Utils.View_utils import View_utils
+
 import pygame
 
-class ChessUI:
-
+class BoardUI:
     
     CELL_SIZE = 75
     MARGIN_SIZE = 25
@@ -15,9 +15,9 @@ class ChessUI:
     HIGHLIGHT_COLOR = (250, 230, 150)
     ASCENSION_CELL_COLOR = (166, 123, 91)
 
-    def __init__(self):
+    def __init__(self, screen):
         self.cells = [[], [], [], [], [], [], [], []]
-        self.screen = None
+        self.screen = screen
 
     def init_board(self) -> None:
         background = pygame.image.load("Render/images/background2.png")

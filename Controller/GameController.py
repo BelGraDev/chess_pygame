@@ -2,15 +2,16 @@ from Board.Move import MoveType
 from Utils.Cell_utils import Cell_utils
 
 class GameController:
-    def __init__(self, board, chessUI):
+    def __init__(self, board, boardUI):
         self.board_status = board.board_status
         self.board = board
-        self.chessUI = chessUI
+        self.chessUI = boardUI
         self.cell_highlighted = None
         self.pawn_ascending = False
         self.ascension_pieces = None
-        
+
     def init_board_pieces(self) -> None:
+            
         board = self.board_status.board
         self.chessUI.init_board()
         self.chessUI.init_pieces(board)
