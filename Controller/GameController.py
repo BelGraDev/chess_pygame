@@ -34,6 +34,7 @@ class GameController:
                         mate_color = self.board_status.turn
                         self._move(prev_cell_name, cell_name)
                         self.chessUI.render_mate(mate_color)
+                        self.buttons = self.chessUI.render_check_buttons()
 
                     case MoveType.TEAMMATE:
                         self._switch_focus(prev_cell_name, cell_name)
@@ -142,6 +143,11 @@ class GameController:
         self._redraw_piece_cell(prev_cell_name)
         self._redraw_list_cells(None, self.possible_moves)
         self._render_possible_moves(cell_name)
+
+    def check_if_button_pressed(self, coord):
+        for button in self.buttons:
+            if button.collidepoint(coord):
+                return button.type 
 
 
 

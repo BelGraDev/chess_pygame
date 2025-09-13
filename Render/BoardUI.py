@@ -1,5 +1,7 @@
 from Render.Cell import Cell
 from Utils.Cell_utils import Cell_utils
+from Render.ChessMenu import Button
+from Render.ChessMenu import ChessButton
 from Utils.View_utils import View_utils
 
 import pygame
@@ -56,6 +58,20 @@ class BoardUI:
     def render_mate(self, turn) -> None:
         image = pygame.image.load(f"Render/images/{turn}_mate.png").convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
+
+    def render_check_buttons(self) -> list[Button]:
+        middle_x = (self.BOARD_WIDTH + self.MARGIN_SIZE * 2) / 2
+        middle_y = self.BOARD_HEIGHT / 2
+
+        button_height = 50; button_width = 150
+
+        got_to_menu_button = Button(ChessButton.GO_TO_MENU, (middle_x - button_width - self.MARGIN_SIZE, middle_y + button_width), button_height, button_width)
+        play_again_button = Button(ChessButton.PLAY_AGAIN, (middle_x + self.MARGIN_SIZE, middle_y + button_width), button_height, button_width)
+
+        pygame.draw.rect(self.screen, (255, 255, 200), got_to_menu_button)
+        pygame.draw.rect(self.screen, (255, 255, 200), play_again_button)
+
+        return (got_to_menu_button, play_again_button)
 
     def render_pawn_ascension(self, cell_name, turn, pieces):
         row, col = Cell_utils.map_cell_to_index(cell_name)
