@@ -63,15 +63,19 @@ class BoardUI:
         middle_x = (self.BOARD_WIDTH + self.MARGIN_SIZE * 2) / 2
         middle_y = self.BOARD_HEIGHT / 2
 
-        button_height = 50; button_width = 150
+        button_height = 50; button_width = 200
 
-        got_to_menu_button = Button(ChessButton.GO_TO_MENU, (middle_x - button_width - self.MARGIN_SIZE, middle_y + button_width), button_height, button_width)
-        play_again_button = Button(ChessButton.PLAY_AGAIN, (middle_x + self.MARGIN_SIZE, middle_y + button_width), button_height, button_width)
+        go_to_menu_button = Button(ChessButton.GO_TO_MENU, (middle_x - button_width - self.MARGIN_SIZE, middle_y + button_width - self.MARGIN_SIZE * 2), button_height, button_width)
+        play_again_button = Button(ChessButton.PLAY_AGAIN, (middle_x + self.MARGIN_SIZE, middle_y + button_width - self.MARGIN_SIZE * 2), button_height, button_width)
+        image_path = "Render/images/Buttons/"
 
-        pygame.draw.rect(self.screen, (255, 255, 200), got_to_menu_button)
-        pygame.draw.rect(self.screen, (255, 255, 200), play_again_button)
+        go_to_menu_image = pygame.image.load(image_path + "back_to_menu.png")
+        play_again_image = pygame.image.load(image_path + "play_again.png")
 
-        return (got_to_menu_button, play_again_button)
+        self.screen.blit(go_to_menu_image, go_to_menu_button)
+        self.screen.blit(play_again_image, play_again_button)
+
+        return (go_to_menu_button, play_again_button)
 
     def render_pawn_ascension(self, cell_name, turn, pieces):
         row, col = Cell_utils.map_cell_to_index(cell_name)

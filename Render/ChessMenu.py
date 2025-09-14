@@ -23,7 +23,7 @@ class ChessMenu:
     
     def _create_buttons(self) -> list[Button]:
         button_types = [ChessButton.PLAY_BUTTON]
-        button_width = 200; button_height = 50
+        button_width = 300; button_height = 75
         button_x = self.width / 2 - button_width / 2
         button_y = self.height / 2
         buttons = [Button(type, (button_x, button_y), button_height, button_width) for type in button_types]
@@ -31,8 +31,12 @@ class ChessMenu:
     
     def render_menu(self):
         self.screen.fill((0, 0, 0))
+        image_path = "Render/images/Buttons/"
         for button in self.buttons:
-            pygame.draw.rect(self.screen, (255, 255, 255), button)
+            match button.type:
+                case ChessButton.PLAY_BUTTON:
+                    image = pygame.image.load(image_path + "player_vs_player.png")
+            self.screen.blit(image, button)
 
     def button_clicked(self, coord) -> ChessButton | None:
             for button in self.buttons:
