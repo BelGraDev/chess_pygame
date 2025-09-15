@@ -24,8 +24,12 @@ class Board:
             else: 
 
                 if self.move_validator._want_to_castle(prev_cell_name, next_cell_name):
-                    self._castle(prev_cell_name, next_cell_name)
-                    move.type = MoveType.CASTLE
+                    king = self.board_status.board[prev_cell_name]
+                    if not self.move_validator._is_king_in_check(king.type):
+                        self._castle(prev_cell_name, next_cell_name)
+                        move.type = MoveType.CASTLE
+                    else:
+                        return MoveType.NOT_AVAILABLE
                 else:
                     can_kill_passant = self.move_validator._can_kill_passant(prev_cell_name, next_cell_name)
                     Board_Utils.move_piece_in_board(self.board_status.board, prev_cell_name, next_cell_name, self.board_status.turn, can_kill_passant)
