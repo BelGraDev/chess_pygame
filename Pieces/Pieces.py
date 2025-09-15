@@ -6,10 +6,10 @@ import pygame
 
 class Pieces(ABC, pygame.Rect):
 
-    def __init__(self, type, board) -> None:
-        self.type = type
+    def __init__(self, type: str, board) -> None:
+        self.type: str = type
         self.board = board
-        self.has_moved = False
+        self.has_moved: bool = False
         
     def is_next_possible(self, prev_cell_name: str, row: int, col: int) -> int | None:
 
@@ -27,11 +27,11 @@ class Pieces(ABC, pygame.Rect):
         except IndexError:
             return None
         
-    def _check_line(self, start_row: int, start_col: int, step_row: int, step_col: int, current_cell_name: str) -> list:
+    def _check_line(self, start_row: int, start_col: int, step_row: int, step_col: int, current_cell_name: str) -> list[str]:
 
-        possible_moves = []
-        current_row = start_row + step_row
-        current_col = start_col + step_col
+        possible_moves: list[str] = []
+        current_row: int = start_row + step_row
+        current_col: int = start_col + step_col
 
         while (current_row < 8 and current_col < 8) and (current_row >= 0 and current_col >= 0):
             move = self.is_next_possible(current_cell_name, current_row, current_col)
@@ -47,6 +47,6 @@ class Pieces(ABC, pygame.Rect):
         return possible_moves
         
     @abstractmethod
-    def possible_moves(self, cell_name: str) -> list:
+    def possible_moves(self, cell_name: str) -> list[str]:
         pass
 

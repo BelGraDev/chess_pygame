@@ -8,10 +8,10 @@ pygame.init()
 
 SCREEN_WIDTH = SCREEN_HEIGHT = 650
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-ui = ChessMenu(screen)
+screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+ui: ChessMenu = ChessMenu(screen)
 ui.render_menu()
-game_state = GameState.MENU
+game_state: GameState = GameState.MENU
 clock = pygame.time.Clock()
 
 while True:
@@ -26,11 +26,11 @@ while True:
                     case ChessButton.PLAY_BUTTON:
                         game_mode = PvpMode(screen)
                         game_mode.init_mode()
-                        game_state = GameState.PVP
+                        game_state: GameState = GameState.PVP
                     case _:
                         pass
             else:
-                game_state = game_mode.play(coord)
+                game_state: GameState = game_mode.play(coord)
 
     pygame.display.update()
     clock.tick(60)

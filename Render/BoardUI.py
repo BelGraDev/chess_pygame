@@ -17,7 +17,7 @@ class BoardUI:
     HIGHLIGHT_COLOR = (250, 230, 150)
     ASCENSION_CELL_COLOR = (166, 123, 91)
 
-    def __init__(self, screen):
+    def __init__(self, screen: pygame.Surface) -> None:
         self.cells = [[], [], [], [], [], [], [], []]
         self.screen = screen
 
@@ -36,11 +36,11 @@ class BoardUI:
                 self.cells[row].append(cell)
                 self.render_border()
 
-    def render_border(self):
+    def render_border(self) -> None:
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
         pygame.draw.rect(self.screen, self.BORDER_COLOR, border,  2)
         
-    def init_pieces(self, board):
+    def init_pieces(self, board) -> None:
 
         for cell, piece in board.items():
             rect = self._get_cell_rect(cell)
@@ -77,7 +77,7 @@ class BoardUI:
 
         return (go_to_menu_button, play_again_button)
 
-    def render_pawn_ascension(self, cell_name, turn, pieces):
+    def render_pawn_ascension(self, cell_name: str, turn, pieces):
         row, col = Cell_utils.map_cell_to_index(cell_name)
         direction = 1 if turn == "w" else -1
         self.ascension_cells = []
@@ -91,32 +91,32 @@ class BoardUI:
         height = self.BOARD_HEIGHT + self.MARGIN_SIZE * 2
         return width, height
     
-    def _get_cell_rect(self, cell_name):
+    def _get_cell_rect(self, cell_name: str):
         row, col = Cell_utils.map_cell_to_index(cell_name)
         cell = self.cells[row][col]
         return cell
     
-    def draw_possible_move(self, cell_name) -> None:
+    def draw_possible_move(self, cell_name: str) -> None:
         image = pygame.image.load("Render/images/move.png").convert_alpha()
         cell = self._get_cell_rect(cell_name)
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
 
-    def draw_empty_cell(self, cell_name):
+    def draw_empty_cell(self, cell_name: str) -> None:
         cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell(self.screen, cell)
 
     def draw_piece(self, piece, cell) -> None:
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
         
-    def draw_highlight(self, piece, cell_name) -> None:
+    def draw_highlight(self, piece, cell_name: str) -> None:
         cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
     
-    def draw_replacement_pieces(self, piece, cell_name) -> None:
+    def draw_replacement_pieces(self, piece, cell_name: str) -> None:
         cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, cell.color, piece, cell)
     
-    def draw_ascension_cell(self, piece, cell_name) -> None:
+    def draw_ascension_cell(self, piece, cell_name: str) -> None:
         cell = self._get_cell_rect(cell_name)
         View_utils.redraw_cell_piece(self.screen, self.ASCENSION_CELL_COLOR, piece, cell)

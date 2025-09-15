@@ -11,13 +11,13 @@ class Pawn(Pieces):
         self.image = pygame.image.load(f"Pieces/images/{type}_pawn.png").convert_alpha()
         self.is_passant = False
     
-    def possible_moves(self, cell_name: str) -> list:
+    def possible_moves(self, cell_name: str) -> list[str]:
 
         row, column = Cell_utils.map_cell_to_index(cell_name)   
 
-        possible_moves = []
+        possible_moves: list[str] = []
 
-        direction = 1 if self.type == "w" else -1
+        direction: int = 1 if self.type == "w" else -1
 
         for col in range(column - 1, column + 2):
             move = self.is_next_possible(cell_name, row - 1 * direction, col)
@@ -54,16 +54,16 @@ class Pawn(Pieces):
         next_row = Cell_utils.map_cell_to_index(next_cell_name)[0]
         return abs(prev_row - next_row) == 2
     
-    def _passant_pawn(self, cell_name: str) -> list:
-        passant_moves = []
+    def _passant_pawn(self, cell_name: str) -> list[str]:
+        passant_moves: list[str] = []
         row, col = Cell_utils.map_cell_to_index(cell_name)
         for c in range(col - 1, col + 2, 2):
-            contiguous_cell_name = Cell_utils.map_index_to_cell(row, c)
+            contiguous_cell_name: str = Cell_utils.map_index_to_cell(row, c)
             contiguous_piece = self.board.board.get(contiguous_cell_name)
             if isinstance(contiguous_piece, Pawn):
                 if contiguous_piece.is_passant:
-                    direction = 1 if self.type == "w" else -1
-                    possible_move = Cell_utils.map_index_to_cell(row - 1 * direction, c)
+                    direction: int = 1 if self.type == "w" else -1
+                    possible_move: str = Cell_utils.map_index_to_cell(row - 1 * direction, c)
                     passant_moves.append(possible_move)
 
         return passant_moves

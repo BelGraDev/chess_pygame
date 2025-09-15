@@ -5,19 +5,19 @@ import pygame
 class Knight(Pieces):
     
     
-    def __init__(self, type, board) -> None:
+    def __init__(self, type: str, board) -> None:
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"Pieces/images/{type}_knight.png").convert_alpha()
 
-    def possible_moves(self, cell_name) -> list:
+    def possible_moves(self, cell_name) -> list[str]:
 
         row, column = Cell_utils.map_cell_to_index(cell_name)
 
-        move_offsets = [(-2, -1), (-2, 1), (2, -1), (2, 1), 
+        move_offsets: list[tuple] = [(-2, -1), (-2, 1), (2, -1), (2, 1), 
                         (-1, -2), (-1, 2), (1, -2), (1, 2)]
 
-        possible_moves = []
+        possible_moves: list[str] = []
 
         for r, c in move_offsets:
             move = self.is_next_possible(cell_name, row + r, column + c)

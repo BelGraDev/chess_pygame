@@ -9,29 +9,29 @@ class ChessButton(IntEnum):
 class Button(pygame.Rect):
 
     def __init__(self, type, coord, height, width):
-        self.type = type
+        self.type: ChessButton = type
         pygame.Rect.__init__(self, coord[0] - self.width / 2, coord[1] - self.height / 2, width, height)
 
 class ChessMenu:
 
-    def __init__(self, screen):
-        self.screen = screen
-        self.width = self.screen.get_width()
-        self.height = self.screen.get_height()
-        self.buttons = self._create_buttons()
+    def __init__(self, screen) -> None:
+        self.screen: pygame.Surface = screen
+        self.width: int = self.screen.get_width()
+        self.height: int = self.screen.get_height()
+        self.buttons: list[Button] = self._create_buttons()
 
     
     def _create_buttons(self) -> list[Button]:
-        button_types = [ChessButton.PLAY_BUTTON]
-        button_width = 300; button_height = 75
-        button_x = self.width / 2 - button_width / 2
-        button_y = self.height / 2
-        buttons = [Button(type, (button_x, button_y), button_height, button_width) for type in button_types]
+        button_types: list[ChessButton] = [ChessButton.PLAY_BUTTON]
+        button_width: int = 300; button_height: int = 75
+        button_x: int = self.width / 2 - button_width / 2
+        button_y: int = self.height / 2
+        buttons: list[Button] = [Button(type, (button_x, button_y), button_height, button_width) for type in button_types]
         return buttons
     
-    def render_menu(self):
+    def render_menu(self) -> None:
         self.screen.fill((0, 0, 0))
-        image_path = "Render/images/Buttons/"
+        image_path: str = "Render/images/Buttons/"
         for button in self.buttons:
             match button.type:
                 case ChessButton.PLAY_BUTTON:

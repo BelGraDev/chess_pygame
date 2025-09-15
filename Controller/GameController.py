@@ -6,25 +6,25 @@ class GameController:
         self.board_status = board.board_status
         self.board = board
         self.chessUI = boardUI
-        self.cell_highlighted = None
-        self.pawn_ascending = False
+        self.cell_highlighted: str = None
+        self.pawn_ascending: bool = False
         self.ascension_pieces = None
 
     def init_board_pieces(self) -> None:
             
-        board = self.board_status.board
+        board: dict = self.board_status.board
         self.chessUI.init_board()
         self.chessUI.init_pieces(board)
-        self.possible_moves = []
+        self.possible_moves: list[str] = []
 
     def render_move(self, cell_name: str) -> None:
 
         if not self.pawn_ascending:
 
-            prev_cell_name = self.cell_highlighted
+            prev_cell_name: str = self.cell_highlighted
 
             if prev_cell_name:
-                move_result = self.board.move(prev_cell_name, cell_name)
+                move_result: MoveType = self.board.move(prev_cell_name, cell_name)
                 match move_result:
 
                     case MoveType.EMPTY_CELL | MoveType.CAPTURE:
@@ -96,7 +96,7 @@ class GameController:
     def _render_castle(self, cell_name: str) -> None:
         row, col = Cell_utils.map_cell_to_index(cell_name)
 
-        rook1_cell_name = Cell_utils.map_index_to_cell(row, col + 1)
+        rook1_cell_name: str = Cell_utils.map_index_to_cell(row, col + 1)
         if self.board_status.board.get(rook1_cell_name) is None:
             self.chessUI.draw_empty_cell(rook1_cell_name)
 
@@ -106,8 +106,8 @@ class GameController:
 
     def _render_passant_kill(self, cell_name):
         row, col = Cell_utils.map_cell_to_index(cell_name)
-        direction = 1 if self.board_status.turn == "w" else -1
-        passant_cell = Cell_utils.map_index_to_cell(row + direction, col)
+        direction: int = 1 if self.board_status.turn == "w" else -1
+        passant_cell: str = Cell_utils.map_index_to_cell(row + direction, col)
         self.chessUI.draw_empty_cell(passant_cell)
 
     def _redraw_piece_cell(self, cell_name: str) -> None:
@@ -132,7 +132,7 @@ class GameController:
             
     def _promote_piece(self, cell_name: str) -> None:
         piece = self._get_promoted_piece(cell_name)
-        ascending_to = self.chessUI.ascension_cells[0]
+        ascending_to: str = self.chessUI.ascension_cells[0]
         self.board.complete_promotion(ascending_to, piece)
         self._move_to_cell(ascending_to)
         self._redraw_list_cells(ascending_to, self.chessUI.ascension_cells)
