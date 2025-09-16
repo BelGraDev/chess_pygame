@@ -2,6 +2,7 @@ from Pieces.Pawn import Pawn
 from Pieces.King import King
 from Utils.Cell_utils import Cell_utils
 from Utils.Board_Utils import Board_Utils
+from .Move import MoveType
 class MoveValidator:
     
     def __init__(self, board):
@@ -42,17 +43,18 @@ class MoveValidator:
             else:
                 self.board_status.b_king_cell = cell_name
 
-    def _opponent_under_check_mate(self) -> bool:
-        opponent_color = "b" if self.board_status.turn == "w" else "w"
+    def is_end_game(self) -> None | MoveType:
+        opponent_color: str = "b" if self.board_status.turn == "w" else "w"
         for cell_name, piece in list(self.board_status.board.items()):
             if piece.type == opponent_color:
-                possible_moves = piece.possible_moves(cell_name)
+                possible_moves: list[str] = piece.possible_moves(cell_name)
                 for move in possible_moves:
-                    is_valid = self._is_valid_move(cell_name, move)
+                    is_valid: bool = self._is_valid_move(cell_name, move)
                     if is_valid:
-                        return False
-        self.board_status.is_check_mate = True
-        return True
+                        return None
+        end_game = MoveType.CHECK_MATE if self._is_king_in_check(opponent_color) else MoveType.TIE
+        self.board_status.is_end_game = True
+        return end_game
 
     def _is_king_in_check(self, king_color: str) -> bool:
             king_cell = self.board_status.w_king_cell if king_color == "w" else self.board_status.b_king_cell

@@ -2,7 +2,7 @@ from Utils.Cell_utils import Cell_utils
 from enum import Enum
 
 class MoveType(Enum):
-
+    TIE = -3
     CHECK_MATE = -2
     NOT_AVAILABLE = -1
     EMPTY_CELL = 0

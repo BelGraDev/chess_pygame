@@ -55,10 +55,15 @@ class BoardUI:
                     return cell.name
                 
         return None
-    def render_mate(self, turn) -> None:
+    
+    def render_mate(self, turn: str) -> None:
         image = pygame.image.load(f"Render/images/{turn}_mate.png").convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
+    def render_tie(self) -> None:
+        image = pygame.image.load("Render/images/tie.png").convert_alpha()
+        self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
+        
     def render_check_buttons(self) -> list[Button]:
         middle_x = (self.BOARD_WIDTH + self.MARGIN_SIZE * 2) / 2
         middle_y = self.BOARD_HEIGHT / 2

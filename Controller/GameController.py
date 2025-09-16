@@ -30,11 +30,10 @@ class GameController:
                     case MoveType.EMPTY_CELL | MoveType.CAPTURE:
                         self._move(prev_cell_name, cell_name)
 
-                    case MoveType.CHECK_MATE:
-                        mate_color = self.board_status.turn
+                    case MoveType.CHECK_MATE | MoveType.TIE:
+                        mate_color: str = self.board_status.turn
                         self._move(prev_cell_name, cell_name)
-                        self.chessUI.render_mate(mate_color)
-                        self.buttons = self.chessUI.render_check_buttons()
+                        self._render_end_game(move_result, mate_color)
 
                     case MoveType.TEAMMATE:
                         self._switch_focus(prev_cell_name, cell_name)
@@ -148,6 +147,14 @@ class GameController:
         for button in self.buttons:
             if button.collidepoint(coord):
                 return button.type 
+
+    def _render_end_game(self, type: MoveType, mate_color: str) -> None:
+        match type:
+            case MoveType.CHECK_MATE:
+                self.chessUI.render_mate(mate_color)
+            case _:
+                self.chessUI.render_tie()
+        self.buttons = self.chessUI.render_check_buttons()
 
 
 

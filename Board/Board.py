@@ -41,8 +41,9 @@ class Board:
 
                 self.move_validator.update_king_cell(next_cell_name, self.board_status.turn)
 
-                if self.move_validator._opponent_under_check_mate():
-                    return MoveType.CHECK_MATE
+                end_game = self.move_validator.is_end_game()
+                if end_game:
+                    return end_game
                 
         return move.type
 

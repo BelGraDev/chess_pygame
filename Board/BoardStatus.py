@@ -48,6 +48,6 @@ class BoardStatus:
         self.b_king_cell = "e8"
         self.turn = "w"
         self.cells = Board_cells(8,8)
-        self.is_check_mate = False
+        self.is_end_game = False
 
 

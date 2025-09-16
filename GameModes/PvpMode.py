@@ -17,14 +17,14 @@ class PvpMode:
         self.controller.init_board_pieces()
         
     def play(self, coord: tuple)-> GameState:
-        if not self.board.board_status.is_check_mate:
-            self._hangle_in_game(coord)
+        if not self.board.board_status.is_end_game:
+            self._handle_in_game(coord)
         else:
             type = self.controller.check_if_button_pressed(coord)
             self._handle_post_game_buttons(type)
 
         return self.game_state
-    def _hangle_in_game(self, coord: tuple) -> None:
+    def _handle_in_game(self, coord: tuple) -> None:
         cell = self.boardUI.selected_cell(coord)
         if cell:
             self.controller.render_move(cell)
