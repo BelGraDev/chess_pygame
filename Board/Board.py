@@ -8,7 +8,9 @@ from .Move import *
 from Utils.Board_Utils import Board_Utils
 from .BoardStatus import BoardStatus
 from .MoveValidator import MoveValidator
-class Board:
+from .IBoard import IBoard
+
+class Board(IBoard):
 
     def __init__(self):
         self.board_status = BoardStatus()
@@ -81,7 +83,7 @@ class Board:
         turn = self.board_status.turn
         return [Queen(turn, self.board_status), Knight(turn, self.board_status), Rook(turn, self.board_status), Bishop(turn, self.board_status)]
     
-    def complete_promotion(self, cell_name, piece):
+    def complete_promotion(self, cell_name: str, piece):
         self.board_status.board[cell_name] = piece
     
     #Castle related methods

@@ -1,7 +1,8 @@
 from Board.Move import MoveType
 from Utils.Cell_utils import Cell_utils
+from .IController import IController
 
-class GameController:
+class GameController(IController):
     def __init__(self, board, boardUI):
         self.board_status = board.board_status
         self.board = board

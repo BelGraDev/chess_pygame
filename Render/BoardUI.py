@@ -3,10 +3,11 @@ from Utils.Cell_utils import Cell_utils
 from Render.ChessMenu import Button
 from Render.ChessMenu import ChessButton
 from Utils.View_utils import View_utils
+from .IBoardUI import IBoardUI
 
 import pygame
 
-class BoardUI:
+class BoardUI(IBoardUI):
     
     CELL_SIZE = 75
     MARGIN_SIZE = 25

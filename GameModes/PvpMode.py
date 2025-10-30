@@ -3,8 +3,9 @@ from Controller.GameController import GameController
 from Render.BoardUI import BoardUI
 from Render.ChessMenu import *
 from .GameState import GameState
+from .IMode import IMode
 
-class PvpMode:
+class PvpMode(IMode):
 
     def __init__(self, screen: pygame.surface.Surface) -> None:
         self.board = Board()
@@ -21,7 +22,7 @@ class PvpMode:
             self._handle_in_game(coord)
         else:
             type = self.controller.check_if_button_pressed(coord)
-            self._handle_post_game_buttons(type)
+            self._handle_post_game(type)
 
         return self.game_state
     def _handle_in_game(self, coord: tuple) -> None:
@@ -30,7 +31,7 @@ class PvpMode:
             self.controller.render_move(cell)
             self.boardUI.render_border()
 
-    def _handle_post_game_buttons(self, type: ChessButton) -> None:
+    def _handle_post_game(self, type: ChessButton) -> None:
         match type:
             case ChessButton.PLAY_AGAIN:
                 self.board = Board()
