@@ -8,7 +8,7 @@ from .Move import *
 from Utils.Board_Utils import Board_Utils
 from .BoardStatus import BoardStatus
 from .MoveValidator import MoveValidator
-from .IBoard import IBoard
+from Interfaces.IBoard import IBoard
 
 class Board(IBoard):
 

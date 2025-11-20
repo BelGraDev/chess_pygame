@@ -1,6 +1,6 @@
 from Board.Move import MoveType
 from Utils.Cell_utils import Cell_utils
-from .IController import IController
+from Interfaces.IController import IController
 
 class GameController(IController):
     def __init__(self, board, boardUI):

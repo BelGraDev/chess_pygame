@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from .GameState import GameState
+from GameModes.GameState import GameState
 
 class IMode(ABC):
 

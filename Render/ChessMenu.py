@@ -5,6 +5,7 @@ class ChessButton(IntEnum):
     PLAY_BUTTON = 1
     PLAY_AGAIN = 2
     GO_TO_MENU = 3
+    ONLINE_BUTTON = 4
 
 class Button(pygame.Rect):
 
@@ -22,11 +23,16 @@ class ChessMenu:
 
     
     def _create_buttons(self) -> list[Button]:
-        button_types: list[ChessButton] = [ChessButton.PLAY_BUTTON]
+        button_types: list[ChessButton] = [ChessButton.PLAY_BUTTON, ChessButton.ONLINE_BUTTON]
         button_width: int = 300; button_height: int = 75
-        button_x: int = self.width / 2 - button_width / 2
-        button_y: int = self.height / 2
-        buttons: list[Button] = [Button(type, (button_x, button_y), button_height, button_width) for type in button_types]
+        buttons = []
+
+        for i, type in enumerate(button_types):   
+
+            button_x: int = self.width / 2 - button_width / 2
+            button_y: int = self.height / 2 + button_height * (i-1)
+            buttons.append(Button(type, (button_x, button_y), button_height, button_width))
+
         return buttons
     
     def render_menu(self) -> None:
@@ -34,8 +40,13 @@ class ChessMenu:
         image_path: str = "Render/images/Buttons/"
         for button in self.buttons:
             match button.type:
+                
                 case ChessButton.PLAY_BUTTON:
                     image = pygame.image.load(image_path + "player_vs_player.png")
+
+                case ChessButton.ONLINE_BUTTON:
+                    image = pygame.image.load(image_path + "player_vs_player.png")
+
             self.screen.blit(image, button)
 
     def button_clicked(self, coord) -> ChessButton | None:

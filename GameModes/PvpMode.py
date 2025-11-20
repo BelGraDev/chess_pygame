@@ -2,8 +2,8 @@ from Board.Board import Board
 from Controller.GameController import GameController
 from Render.BoardUI import BoardUI
 from Render.ChessMenu import *
-from .GameState import GameState
-from .IMode import IMode
+from GameModes.GameState import GameState
+from Interfaces.IMode import IMode
 
 class PvpMode(IMode):
 
@@ -25,6 +25,7 @@ class PvpMode(IMode):
             self._handle_post_game(type)
 
         return self.game_state
+    
     def _handle_in_game(self, coord: tuple) -> None:
         cell = self.boardUI.selected_cell(coord)
         if cell:
