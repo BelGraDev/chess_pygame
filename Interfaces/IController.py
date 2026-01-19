@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Render.ChessMenu import ChessButton
 
 class IController(ABC):
 
@@ -10,5 +11,5 @@ class IController(ABC):
         pass
 
     @abstractmethod
-    def check_if_button_pressed(self, coord: tuple):
+    def check_if_button_pressed(self, coord: tuple[int, int]) -> ChessButton | None:
         pass

@@ -1,23 +1,28 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from Utils.Cell_utils import Cell_utils
-from Board.Move import MoveType
-from Board.Move import Move
-import pygame
+from Utils.Cell_utils import map_index_to_cell
+from Board.Move import MoveType, Move
+from pygame import Rect
+from typing import TYPE_CHECKING
 
-class Pieces(ABC, pygame.Rect):
+if TYPE_CHECKING:
+    from Board.BoardStatus import BoardStatus
 
-    def __init__(self, type: str, board) -> None:
-        self.type: str = type
+class Piece(ABC, Rect):
+
+    def __init__(self, type: str, board: BoardStatus) -> None:
+        self.type = type
         self.board = board
-        self.has_moved: bool = False
-        
-    def is_next_possible(self, prev_cell_name: str, row: int, col: int) -> int | None:
+        self.has_moved = False
+        self.image_path = "Board/Pieces/images/"
+
+    def is_next_possible(self, prev_cell_name: str, row: int, col: int) -> Move | None:
 
         try:
             self.board.cells[row, col]
 
-            next_cell_name = Cell_utils.map_index_to_cell(row, col)
-            move = Move(self.board, prev_cell_name, next_cell_name)
+            next_cell_name = map_index_to_cell(row, col)
+            move = Move(self.board.board, prev_cell_name, next_cell_name)
 
             match move.type:
                 case MoveType.EMPTY_CELL | MoveType.CAPTURE:

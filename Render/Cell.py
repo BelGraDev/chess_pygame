@@ -2,7 +2,7 @@ import pygame
 
 class Cell(pygame.Rect):
     CELL_SIZE = 75
-    def __init__(self, coord: iter, name: str, color: tuple) -> None:
+    def __init__(self, coord: tuple[float, float], name: str, color: tuple[int, int, int, int]) -> None:
 
         self.name = name
         self.color = color

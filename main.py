@@ -2,7 +2,6 @@ import pygame
 import sys
 from Render.ChessMenu import *
 from GameModes.PvpMode import PvpMode
-from GameModes.OnlineMode import OnlineMode
 from GameModes.GameState import GameState
 
 pygame.init()
@@ -38,16 +37,16 @@ while True:
                         game_mode.init_mode()
                         game_state: GameState = GameState.PVP
 
-                    case ChessButton.ONLINE_BUTTON:
+                    # case ChessButton.AI_BUTTON:
 
-                        game_mode = OnlineMode(screen)
-                        game_mode.init_mode()
-                        game_state: GameState = GameState.ONLINE
+                    #     game_mode = OnlineMode(screen)
+                    #     game_mode.init_mode()
+                    #     game_state: GameState = GameState.AI
 
                     case _:
                         pass
             else:
-                game_state: GameState = game_mode.play(coord)
+                game_state = game_mode.play(coord)
 
     pygame.display.update()
     clock.tick(60)
