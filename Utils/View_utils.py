@@ -1,6 +1,6 @@
 import pygame
 from Board.Pieces import Piece
-from Render.Cell import Cell
+from Render.boardCells import Cell
 
 def redraw_cell_piece(screen: pygame.Surface, color: tuple[int, int , int, int], piece: Piece, cell: Cell) -> None:
     pygame.draw.rect(screen, color, cell)

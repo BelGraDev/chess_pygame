@@ -1,15 +1,15 @@
 from .ui import UI
-from Utils.Cell_utils import map_index_to_cell, get_cell_rect, map_cell_to_index
+from Utils.Cell_utils import map_index_to_cell, map_cell_to_index
 from Utils.View_utils import redraw_cell_piece, redraw_cell
 import pygame
 from Board.Pieces import Piece
-from Render.Cell import Cell
+from .boardCells import Cell, BoardCells
 
 
 class BoardUI(UI):
-    def __init__(self, screen: pygame.Surface, cells: list[list[Cell]], ascension_cells: list[str]):
+    def __init__(self, screen: pygame.Surface, cells: BoardCells, ascension_cells: list[str]):
         self.screen = screen
-        self.cells = cells
+        self.board_cells = cells
         self.ascension_cells = ascension_cells
 
 
@@ -18,19 +18,14 @@ class BoardUI(UI):
         self.screen.blit(background, (0,0))
         for row in range(8):
             for col in range(8):
-                x = self.MARGIN_SIZE + col * self.CELL_SIZE
-                y = self.MARGIN_SIZE + row * self.CELL_SIZE
-                cell_name = map_index_to_cell(row, col)
-                color = self.WHITE_COLOR if (row + col) % 2 == 0 else self.GREY_COLOR       
-                cell = Cell((x, y), cell_name, color)
-                pygame.draw.rect(self.screen, color, cell)
-                self.cells[row].append(cell)
-                self.render_border()
+                cell = self.board_cells[row, col]
+                pygame.draw.rect(self.screen, cell.color, cell)
+        self.render_border()
 
 
     def init_pieces(self, board: dict[str, Piece]) -> None:
-        for cell, piece in board.items():
-            rect = get_cell_rect(cell, self.cells)
+        for cell_name, piece in board.items():
+            rect = self.board_cells[cell_name]
             self.screen.blit(piece.image, rect)
 
 
@@ -49,25 +44,25 @@ class BoardUI(UI):
 
     def draw_possible_move(self, cell_name: str) -> None:
         image = pygame.image.load("Render/images/move.png").convert_alpha()
-        cell = get_cell_rect(cell_name, self.cells)
+        cell = self.board_cells[cell_name]
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
 
     def _draw_ascension_cell(self, piece: Piece, cell_name: str) -> None:
-        cell = get_cell_rect(cell_name, self.cells)
+        cell = self.board_cells[cell_name]
         redraw_cell_piece(self.screen, self.ASCENSION_CELL_COLOR, piece, cell)
 
     def draw_highlight(self, piece: Piece, cell_name: str) -> None:
-        cell = get_cell_rect(cell_name, self.cells)
+        cell = self.board_cells[cell_name]
         redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
     
     def draw_replacement_pieces(self, piece: Piece, cell_name: str) -> None:
-        cell = get_cell_rect(cell_name, self.cells)
+        cell = self.board_cells[cell_name]
         redraw_cell_piece(self.screen, cell.color, piece, cell)
 
     
     def draw_empty_cell(self, cell_name: str) -> None:
-        cell = get_cell_rect(cell_name, self.cells)
+        cell = self.board_cells[cell_name]
         redraw_cell(self.screen, cell)
 
 

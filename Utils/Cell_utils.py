@@ -1,8 +1,9 @@
 from __future__ import annotations #This imports are required to avoid circular dependency and 
 from typing import TYPE_CHECKING   #provide type hints safely
-from Render.Cell import Cell
 if TYPE_CHECKING:
     from Board.Pieces import Piece
+    from Render.boardCells import Cell
+
 
 
 #Since the board is drawn from top to bottom, the row number has to be adjusted accordingly
@@ -31,9 +32,3 @@ def get_passant_cell(cell_name: str, turn: str) -> str:
     direction = 1 if turn == "w" else -1
     passant_cell_name = map_index_to_cell(row + direction, col)
     return passant_cell_name
-
-
-def get_cell_rect(cell_name: str, cells: list[list[Cell]]) -> Cell:
-    row, col = map_cell_to_index(cell_name)
-    cell = cells[row][col]
-    return cell

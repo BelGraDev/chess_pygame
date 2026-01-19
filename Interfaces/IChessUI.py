@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from Render.ChessMenu import Button
-from Render.Cell import Cell
+from Render.boardCells import Cell
 
 from Board.Pieces import Piece
 from pygame import Surface
