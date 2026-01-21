@@ -5,6 +5,7 @@ from .ui import UI
 from .endGameUI import EndGameUI
 from .boardUI import BoardUI
 from .boardCells import BoardCells, Cell
+from Board.BoardStatus import BoardStatus
 import pygame
 
 class ChessUI(IChessUI, UI):
@@ -20,7 +21,7 @@ class ChessUI(IChessUI, UI):
         self.board_ui.init_board()
 
 
-    def init_pieces(self, board: dict[str, Piece]) -> None:
+    def init_pieces(self, board: BoardStatus) -> None:
         self.board_ui.init_pieces(board)
 
     

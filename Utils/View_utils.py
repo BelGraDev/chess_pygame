@@ -2,7 +2,7 @@ import pygame
 from Board.Pieces import Piece
 from Render.boardCells import Cell
 
-def redraw_cell_piece(screen: pygame.Surface, color: tuple[int, int , int, int], piece: Piece, cell: Cell) -> None:
+def redraw_cell_piece(screen: pygame.Surface, color: tuple[int, ...], piece: Piece, cell: Cell) -> None:
     pygame.draw.rect(screen, color, cell)
     screen.blit(piece.image, cell)
 

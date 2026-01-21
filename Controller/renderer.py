@@ -4,6 +4,7 @@ from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
 from Board.Move import MoveType
 from .controllerStatus import ControllerStatus
 from Board.Pieces import Piece
+from typing import Optional
 
 class Renderer:
     def __init__(self, chessUI: IChessUI, logic_manager: LogicManager, controller_status: ControllerStatus):
@@ -63,18 +64,19 @@ class Renderer:
 
     def ascend_pawn(self, prev_cell_name: str, cell_name: str) -> None:
         ascension_pieces = self.controller_status.ascend_pawn()
-        self.chessUI.render_pawn_ascension(cell_name, self.logic_manager.get_turn(), ascension_pieces)
         self._unhighlight_cell(prev_cell_name)
+        self.chessUI.render_pawn_ascension(cell_name, self.logic_manager.get_turn(), ascension_pieces)
         self.redraw_list_cells(cell_name, self.controller_status.possible_moves_cells)
 
 
     def promote_piece(self, cell_name: str) -> None:
         piece = self._get_promoted_piece(cell_name)
-        ascending_to = self.chessUI.ascension_cells[0]
-        self.logic_manager.complete_promotion(ascending_to, piece)
-        self._move_to_cell(ascending_to)
-        self.redraw_list_cells(ascending_to, self.chessUI.ascension_cells)
-        self.controller_status.promote_piece()
+        if piece is not None:
+            ascending_to = self.chessUI.ascension_cells[0]
+            self.logic_manager.complete_promotion(ascending_to, piece)
+            self._move_to_cell(ascending_to)
+            self.redraw_list_cells(ascending_to, self.chessUI.ascension_cells)
+            self.controller_status.promote_piece()
 
         
     def highlight_cell(self, cell_name: str) -> None:
@@ -100,10 +102,12 @@ class Renderer:
         self.chessUI.draw_empty_cell(cell_name)
 
     
-    def _get_promoted_piece(self, cell_name: str) -> Piece:
-        index = self.chessUI.ascension_cells.index(cell_name)
-        piece = self.controller_status.ascension_pieces[index]
-        return piece
+    def _get_promoted_piece(self, cell_name: str) -> Optional[Piece]:
+        if cell_name in self.chessUI.ascension_cells:
+            index = self.chessUI.ascension_cells.index(cell_name)
+            piece = self.controller_status.ascension_pieces[index]
+            return piece
+        return None
     
 
     def _redraw_piece_cell(self, cell_name: str) -> None:

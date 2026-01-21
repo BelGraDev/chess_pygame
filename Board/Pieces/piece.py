@@ -2,14 +2,17 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from Utils.Cell_utils import map_index_to_cell
 from Board.Move import MoveType, Move
-from pygame import Rect
+from Board.boardCells import Position
+from pygame import Rect, Surface
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from Board.BoardStatus import BoardStatus
 
+
 class Piece(ABC, Rect):
 
+    image: Surface
     def __init__(self, type: str, board: BoardStatus) -> None:
         self.type = type
         self.board = board
@@ -22,7 +25,7 @@ class Piece(ABC, Rect):
             self.board.cells[row, col]
 
             next_cell_name = map_index_to_cell(row, col)
-            move = Move(self.board.board, prev_cell_name, next_cell_name)
+            move = Move(self.board, prev_cell_name, next_cell_name)
 
             match move.type:
                 case MoveType.EMPTY_CELL | MoveType.CAPTURE:
@@ -32,13 +35,13 @@ class Piece(ABC, Rect):
         except IndexError:
             return None
         
-    def _check_line(self, start_row: int, start_col: int, step_row: int, step_col: int, current_cell_name: str) -> list[str]:
+    def _check_line(self, start: Position, step: Position, current_cell_name: str) -> list[str]:
 
         possible_moves: list[str] = []
-        current_row: int = start_row + step_row
-        current_col: int = start_col + step_col
+        current_row = start.row + step.row
+        current_col = start.col + step.col
 
-        while (current_row < 8 and current_col < 8) and (current_row >= 0 and current_col >= 0):
+        while 0 <= current_row < self.board.num_rows and 0 <= current_col < self.board.num_col:
             move = self.is_next_possible(current_cell_name, current_row, current_col)
             if move:
                 possible_moves.append(move.next_cell)
@@ -46,8 +49,8 @@ class Piece(ABC, Rect):
                     break
             else:
                 break
-            current_row += step_row
-            current_col += step_col
+            current_row += step.row
+            current_col += step.col
 
         return possible_moves
         

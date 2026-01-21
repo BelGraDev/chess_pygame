@@ -39,7 +39,7 @@ class GameLogic:
 
     def is_end_game(self) -> None | MoveType:
         opponent_color: str = "b" if self.board_status.turn == "w" else "w"
-        for cell_name, piece in list(self.board_status.board.items()):
+        for cell_name, piece in list(self.board_status.items()):
             if piece.type == opponent_color:
                 possible_moves = piece.possible_moves(cell_name)
                 for move in possible_moves:

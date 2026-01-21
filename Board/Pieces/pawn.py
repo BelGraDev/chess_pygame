@@ -1,11 +1,15 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from Board.Pieces import Piece
 from Board.Move import MoveType
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell
 import pygame
+if TYPE_CHECKING:
+    from Board.BoardStatus import BoardStatus
 
 class Pawn(Piece):
 
-    def __init__(self, type: str, board) -> None:
+    def __init__(self, type: str, board: BoardStatus) -> None:
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_pawn.png").convert_alpha()
@@ -57,7 +61,7 @@ class Pawn(Piece):
         row, col = map_cell_to_index(cell_name)
         for c in range(col - 1, col + 2, 2):
             contiguous_cell_name: str = map_index_to_cell(row, c)
-            contiguous_piece = self.board.board.get(contiguous_cell_name)
+            contiguous_piece = self.board.get(contiguous_cell_name)
             if isinstance(contiguous_piece, Pawn):
                 if contiguous_piece.is_passant:
                     direction: int = 1 if self.type == "w" else - 1

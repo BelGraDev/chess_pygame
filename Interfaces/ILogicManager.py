@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from Board.Pieces import Piece
 from Board.Move import MoveType
+from Board.BoardStatus import BoardStatus
 
 class ILogicManager(ABC):
 
@@ -37,5 +38,5 @@ class ILogicManager(ABC):
         pass
 
     @abstractmethod
-    def get_board(self) -> dict[str, Piece]:
+    def get_board(self) -> BoardStatus:
         pass

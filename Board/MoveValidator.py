@@ -13,7 +13,6 @@ class MoveValidator:
 
 
     def is_valid_move(self, prev_cell_name: str, next_cell_name: str) -> bool:
-        board = self.board_status.board
         can_kill_passant = self.passantLogic.can_kill_passant(prev_cell_name, next_cell_name)
 
         if can_kill_passant:
@@ -24,7 +23,7 @@ class MoveValidator:
             original_next_piece = self.board_status.get(next_cell_name)
             next_piece_cell_name = next_cell_name
 
-        prev_piece = move_piece_in_board(board, prev_cell_name, next_cell_name, self.board_status.turn, can_kill_passant)
+        prev_piece = move_piece_in_board(self.board_status, prev_cell_name, next_cell_name, can_kill_passant)
 
         if prev_piece is not None:
             prev_piece_color = prev_piece.type
@@ -32,7 +31,7 @@ class MoveValidator:
 
             king_is_in_check = self.board_status.is_king_in_check(prev_piece_color)
 
-            restore_last_state(board, prev_piece, original_next_piece, prev_cell_name, next_piece_cell_name, next_cell_name)
+            restore_last_state(self.board_status, prev_piece, original_next_piece, prev_cell_name, next_piece_cell_name, next_cell_name)
             
             self.board_status.update_king_cell(prev_cell_name, prev_piece_color)
             return not king_is_in_check

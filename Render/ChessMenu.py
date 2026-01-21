@@ -11,7 +11,8 @@ class Button(pygame.Rect):
 
     def __init__(self, type: ChessButton, coord: tuple[float, float], height: int, width: int):
         self.type = type
-        pygame.Rect.__init__(self, coord[0] - self.width / 2, coord[1] - self.height / 2, width, height)
+        x, y = coord
+        pygame.Rect.__init__(self, x - self.width / 2, y - self.height / 2, width, height)
 
 class ChessMenu:
 

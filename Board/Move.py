@@ -4,7 +4,7 @@ from Utils.Cell_utils import is_cell_empty, are_teammates
 from enum import Enum
 
 if TYPE_CHECKING:
-    from Pieces import Piece
+    from .BoardStatus import BoardStatus
 
 class MoveType(Enum):
     TIE = -3
@@ -19,9 +19,8 @@ class MoveType(Enum):
 
 class Move:
 
-    def __init__(self, board: dict[str, Piece], prev_cell_name: str, next_cell_name: str) -> None:
+    def __init__(self, board: BoardStatus, prev_cell_name: str, next_cell_name: str) -> None:
         self.board = board
-        self.prev_cell = prev_cell_name
         self.next_cell = next_cell_name
         self.type = self._move_type(prev_cell_name, next_cell_name)
 

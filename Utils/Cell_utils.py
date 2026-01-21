@@ -1,8 +1,7 @@
 from __future__ import annotations #This imports are required to avoid circular dependency and 
 from typing import TYPE_CHECKING   #provide type hints safely
 if TYPE_CHECKING:
-    from Board.Pieces import Piece
-    from Render.boardCells import Cell
+    from Board.BoardStatus import BoardStatus
 
 
 
@@ -19,10 +18,10 @@ def map_index_to_cell(row: int, column: int) -> str:
     cell_name = f"{column_letter}{str(adj_row)}"
     return cell_name
 
-def is_cell_empty(cell_name: str, board: dict[str, Piece]) -> bool:
+def is_cell_empty(cell_name: str, board: BoardStatus) -> bool:
     return cell_name not in board
 
-def are_teammates(prev_cell_name: str, next_cell_name: str, board: dict[str, Piece]) -> bool:
+def are_teammates(prev_cell_name: str, next_cell_name: str, board: BoardStatus) -> bool:
     prev_piece = board[prev_cell_name]
     next_piece = board[next_cell_name]
     return prev_piece.type == next_piece.type

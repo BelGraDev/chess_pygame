@@ -8,6 +8,6 @@ class IMode(ABC):
         pass
 
     @abstractmethod
-    def play(self, coord:tuple) -> GameState:
+    def play(self, coord:tuple[int, int]) -> GameState:
         pass
 

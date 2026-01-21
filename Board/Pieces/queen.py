@@ -1,10 +1,14 @@
-from Board.Pieces import Rook, Bishop
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from Board.Pieces import Rook, Bishop, Piece
 import pygame
-
-class Queen(Rook, Bishop):
+if TYPE_CHECKING:
+    from Board.BoardStatus import BoardStatus
+    
+class Queen(Piece):
     
     
-    def __init__(self, type: str, board) -> None:
+    def __init__(self, type: str, board: BoardStatus) -> None:
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_queen.png").convert_alpha()

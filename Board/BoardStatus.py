@@ -1,11 +1,14 @@
 from .Pieces import Piece, Knight, Bishop, Rook, Pawn, Queen, King
 from .Move import *
-from .Board_Cells import Board_cells
+from .boardCells import BoardCells
+from collections.abc import MutableMapping
+from typing import Iterator
 
-class BoardStatus:
+
+class BoardStatus(MutableMapping[str, Piece]):
 
     def __init__(self):
-        self.board: dict[str, Piece] =  {
+        self._board: dict[str, Piece] =  {
             "a1": Rook("w", self),
             "b1": Knight("w", self),
             "c1": Bishop("w", self),
@@ -42,8 +45,10 @@ class BoardStatus:
         self.w_king_cell = "e1"
         self.b_king_cell = "e8"
         self.turn = "w"
-        self.cells = Board_cells(8,8)
+        self.num_rows = self.num_col = 8
+        self.cells = BoardCells(self.num_rows,self.num_col)
         self.is_end_game = False
+
     
 
     def switch_turn(self) -> None:
@@ -51,7 +56,7 @@ class BoardStatus:
     
 
     def update_king_cell(self, cell_name: str, king_color: str) -> None:
-        piece = self.board[cell_name]
+        piece = self._board[cell_name]
         if isinstance(piece, King):
             if king_color == "w":
                 self.w_king_cell = cell_name
@@ -61,26 +66,31 @@ class BoardStatus:
 
     def is_king_in_check(self, king_color: str) -> bool:
         king_cell = self.w_king_cell if king_color == "w" else self.b_king_cell
-        king =  self.board[king_cell]
+        king =  self._board[king_cell]
         return king.is_on_check(king_cell)
+    
     
     def ascension_pieces(self) -> list[Piece]:
         return [Queen(self.turn, self), 
-                Knight(self.turn, self), 
                 Rook(self.turn, self), 
-                Bishop(self.turn, self)]
+                Bishop(self.turn, self),
+                Knight(self.turn, self)]
+
 
     def __getitem__(self, cell_name: str) -> Piece:
-        return self.board[cell_name]
+        return self._board[cell_name]
 
 
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._board)
+    
+
+    def __len__(self) -> int:
+        return len(self._board)
+    
     def __setitem__(self, cell_name: str, piece: Piece) -> None:
-        self.board[cell_name] = piece
+        self._board[cell_name] = piece
     
 
     def __delitem__(self, cell_name: str) -> None:
-        del self.board[cell_name]
-    
-
-    def get(self, cell_name: str) -> Piece | None:
-        return self.board.get(cell_name)
+        del self._board[cell_name]

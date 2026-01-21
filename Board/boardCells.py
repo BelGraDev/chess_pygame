@@ -1,5 +1,11 @@
 import numpy as np
-class Board_cells:
+from typing import NamedTuple
+
+class Position(NamedTuple):
+    row: int
+    col: int
+    
+class BoardCells:
     def __init__(self, row: int, col: int):
         self.cells = np.zeros((row, col))
 

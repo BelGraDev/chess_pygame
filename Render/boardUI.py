@@ -3,6 +3,7 @@ from Utils.Cell_utils import map_index_to_cell, map_cell_to_index
 from Utils.View_utils import redraw_cell_piece, redraw_cell
 import pygame
 from Board.Pieces import Piece
+from Board.BoardStatus import BoardStatus
 from .boardCells import Cell, BoardCells
 
 
@@ -23,7 +24,7 @@ class BoardUI(UI):
         self.render_border()
 
 
-    def init_pieces(self, board: dict[str, Piece]) -> None:
+    def init_pieces(self, board: BoardStatus) -> None:
         for cell_name, piece in board.items():
             rect = self.board_cells[cell_name]
             self.screen.blit(piece.image, rect)
@@ -34,10 +35,11 @@ class BoardUI(UI):
         pygame.draw.rect(self.screen, self.BORDER_COLOR, border,  2)
 
     def render_pawn_ascension(self, cell_name: str, turn: str, pieces: list[Piece]) -> None:
+        self.ascension_cells.clear()
         row, col = map_cell_to_index(cell_name)
         direction = 1 if turn == "w" else -1
         
-        for r, piece in zip(range(row, row + (5 * direction), direction), pieces):
+        for r, piece in zip(range(row, row + (len(pieces) * direction), direction), pieces):
             cell_name = map_index_to_cell(r, col)
             self.ascension_cells.append(cell_name)
             self._draw_ascension_cell(piece, cell_name)

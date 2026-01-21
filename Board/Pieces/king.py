@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from Board.Pieces import Piece, Rook, Knight, Bishop
+from Board.Pieces import Piece, Rook, Knight, Bishop, Pawn
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
 import pygame
 
@@ -43,13 +43,13 @@ class King(Piece):
         if not self.has_moved:
 
             rook_cell: str = map_index_to_cell(row, end_col)
-            if is_cell_empty(rook_cell, self.board.board) or self.board.board[rook_cell].has_moved:
+            if is_cell_empty(rook_cell, self.board) or self.board[rook_cell].has_moved:
                 return castle_moves
             
             step = 1 if start_col < end_col else -1
             cells_between_rook_and_king = (map_index_to_cell(row, c) for c in range(start_col, end_col, step))
 
-            if all(is_cell_empty(cell, self.board.board) for cell in cells_between_rook_and_king):
+            if all(is_cell_empty(cell, self.board) for cell in cells_between_rook_and_king):
                 castle_cell = map_index_to_cell(row, goal_col)
                 castle_moves.append(castle_cell)
 
@@ -67,9 +67,9 @@ class King(Piece):
     
 
     def _inspect_moves(self, possible_check: list[str], piece1: str, piece2: None | str = None) -> bool:
-        return any(self.board.board[cell].__class__.__name__ in (piece1, piece2) 
+        return any(self.board[cell].__class__.__name__ in (piece1, piece2) 
                    for cell in possible_check
-                   if not is_cell_empty(cell, self.board.board))
+                   if not is_cell_empty(cell, self.board))
     
     
     def _inspect_pawn(self, cell_name: str) -> bool:
@@ -79,8 +79,8 @@ class King(Piece):
 
         for r, c in check_pawn_offsets:
             move_cell = map_index_to_cell(row + r, col + c)
-            if not is_cell_empty(move_cell, self.board.board):
-                piece = self.board.board[move_cell]
-                if piece.type != self.type and piece.__class__.__name__ == "Pawn":
+            if not is_cell_empty(move_cell, self.board):
+                piece = self.board[move_cell]
+                if piece.type != self.type and isinstance(piece, Pawn):
                     return True
         return False

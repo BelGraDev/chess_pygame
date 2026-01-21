@@ -3,19 +3,25 @@ from .ui import UI
 from Utils.Cell_utils import map_index_to_cell, map_cell_to_index
 
 class Cell(Rect):
+
     CELL_SIZE = 75
-    def __init__(self, coord: tuple[float, float], name: str, color: tuple[int, int, int, int]) -> None:
+
+    def __init__(self, coord: tuple[float, float], name: str, color: tuple[int, ...]) -> None:
 
         self.name = name
         self.color = color
-        Rect.__init__(self, coord[0], coord[1],  self.CELL_SIZE, self.CELL_SIZE)
+        x, y = coord
+        super().__init__(x, y,  self.CELL_SIZE, self.CELL_SIZE)
+
 
 class BoardCells(UI):
-    def __init__(self):
-        self.board_cells: list[list[Cell]] = self._init_board_cells()
 
-    def _init_board_cells(self) -> list[list[Cell]]:
-        board_cells: list[list[Cell]] = [[],[],[],[],[],[],[],[]]
+    def __init__(self):
+        self.board_cells = self._init_board_cells()
+
+
+    def _init_board_cells(self) -> tuple[list[Cell], ...]:
+        board_cells: tuple[list[Cell], ...] = tuple([] for _ in range(8))
         for row in range(8):
             for col in range(8):
                 x = self.MARGIN_SIZE + col * self.CELL_SIZE
@@ -25,6 +31,7 @@ class BoardCells(UI):
                 cell = Cell((x, y), cell_name, color)
                 board_cells[row].append(cell)
         return board_cells
+    
 
     def __getitem__(self, key: str | tuple[int, int]) -> Cell:
         if isinstance(key, str):
@@ -32,5 +39,6 @@ class BoardCells(UI):
             cell = self.board_cells[row][col]
             return cell
         else:
-            return self.board_cells[key[0]][key[1]]
+            row, col = key
+            return self.board_cells[row][col]
 

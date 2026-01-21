@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from Render.ChessMenu import Button
 from Render.boardCells import Cell
+from Board.BoardStatus import BoardStatus
 
 from Board.Pieces import Piece
 from pygame import Surface
@@ -16,7 +17,7 @@ class IChessUI(ABC):
         pass
     
     @abstractmethod
-    def init_pieces(self, board: dict[str, Piece]) -> None:
+    def init_pieces(self, board: BoardStatus) -> None:
         pass
 
     @abstractmethod

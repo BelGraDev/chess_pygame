@@ -1,5 +1,4 @@
-from .Pieces import Piece, Bishop, Rook, Knight, Queen
-
+from .Pieces import Piece
 from .Move import *
 from Utils.Board_Utils import move_piece_in_board
 from .SpecialMovesLogic import CastleLogic, PassantLogic
@@ -20,7 +19,7 @@ class LogicManager(ILogicManager):
 
     def move(self, prev_cell_name: str, next_cell_name: str) -> MoveType:
 
-        move = Move(self.get_board(), prev_cell_name, next_cell_name)
+        move = Move(self.board_status, prev_cell_name, next_cell_name)
 
         if move.type is not MoveType.TEAMMATE:
             if not self.move_validator.is_valid_move(prev_cell_name, next_cell_name):
@@ -36,7 +35,7 @@ class LogicManager(ILogicManager):
                         return MoveType.NOT_AVAILABLE
                 else:
                     can_kill_passant = self.passantLogic.can_kill_passant(prev_cell_name, next_cell_name)
-                    move_piece_in_board(self.board_status, prev_cell_name, next_cell_name, self.board_status.turn, can_kill_passant)
+                    move_piece_in_board(self.board_status, prev_cell_name, next_cell_name, can_kill_passant)
                     self.passantLogic.manage_passant(prev_cell_name, next_cell_name)
                     if can_kill_passant:
                         return MoveType.PASSANT_PAWN
@@ -64,8 +63,8 @@ class LogicManager(ILogicManager):
         return self.board_status.turn
     
 
-    def get_board(self) -> dict[str, Piece]:
-        return self.board_status.board
+    def get_board(self) -> BoardStatus:
+        return self.board_status
     
 
     def can_color_play(self, cell_name: str) -> bool:

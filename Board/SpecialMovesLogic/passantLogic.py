@@ -18,7 +18,7 @@ class PassantLogic:
             return False
         passant_cell_name = get_passant_cell(next_cell_name, self.board_status.turn)
         passant = self.board_status.get(passant_cell_name)
-        return isinstance(passant, Pawn) and passant.is_passant and not are_teammates(prev_cell_name, passant_cell_name, self.board_status.board)
+        return isinstance(passant, Pawn) and passant.is_passant and not are_teammates(prev_cell_name, passant_cell_name, self.board_status)
     
             
     def _make_pawn_passant(self, prev_cell_name: str, next_cell_name: str) -> None:
@@ -29,6 +29,6 @@ class PassantLogic:
 
 
     def _restore_passant(self) -> None:
-        for piece in self.board_status.board.values():
+        for piece in self.board_status.values():
             if isinstance(piece, Pawn) and piece.type == self.board_status.turn:
                 piece.is_passant = False
