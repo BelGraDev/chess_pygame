@@ -24,7 +24,7 @@ class Knight(Piece):
         move_offsets: list[tuple[int, int]] = [(-2, -1), (-2, 1), (2, -1), (2, 1), 
                                             (-1, -2), (-1, 2), (1, -2), (1, 2)]
 
-        possible_moves = [move.next_cell
+        possible_moves = [move.step.end_cell
                           for r, c in move_offsets
                           if (move := self.is_next_possible(cell_name, row + r, column + c))]
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from Utils.Cell_utils import map_index_to_cell
-from Board.Move import MoveType, Move
+from Board.Move import MoveType, Move, Step
 from Board.boardCells import Position
 from pygame import Rect, Surface
 from typing import TYPE_CHECKING
@@ -25,7 +25,8 @@ class Piece(ABC, Rect):
             self.board.cells[row, col]
 
             next_cell_name = map_index_to_cell(row, col)
-            move = Move(self.board, prev_cell_name, next_cell_name)
+            step = Step(prev_cell_name, next_cell_name)
+            move = Move(self.board, step)
 
             match move.type:
                 case MoveType.EMPTY_CELL | MoveType.CAPTURE:
@@ -44,7 +45,7 @@ class Piece(ABC, Rect):
         while 0 <= current_row < self.board.num_rows and 0 <= current_col < self.board.num_col:
             move = self.is_next_possible(current_cell_name, current_row, current_col)
             if move:
-                possible_moves.append(move.next_cell)
+                possible_moves.append(move.step.end_cell)
                 if move.type == MoveType.CAPTURE:
                     break
             else:

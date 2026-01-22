@@ -1,7 +1,7 @@
 from .BoardStatus import BoardStatus
 from .MoveValidator import MoveValidator
 from .Pieces import Pawn, Piece
-from .Move import MoveType
+from .Move import MoveType, Step
 from Utils.Cell_utils import map_cell_to_index
 
 class GameLogic:
@@ -43,7 +43,7 @@ class GameLogic:
             if piece.type == opponent_color:
                 possible_moves = piece.possible_moves(cell_name)
                 for move in possible_moves:
-                    is_valid = self.move_validator.is_valid_move(cell_name, move)
+                    is_valid = self.move_validator.is_valid_move(Step(cell_name, move))
                     if is_valid:
                         return None
         end_game = MoveType.CHECK_MATE if self.board_status.is_king_in_check(opponent_color) else MoveType.TIE

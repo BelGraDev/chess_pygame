@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NamedTuple
+from dataclasses import dataclass, field
 from Utils.Cell_utils import is_cell_empty, are_teammates
 from enum import Enum
 
@@ -17,19 +18,26 @@ class MoveType(Enum):
     PAWN_ASCENSION = 4
     PASSANT_PAWN = 5
 
+
+class Step(NamedTuple):
+    start_cell: str
+    end_cell: str
+
+@dataclass
 class Move:
+    board: BoardStatus
+    step: Step
+    type: MoveType = field(init=False)
 
-    def __init__(self, board: BoardStatus, prev_cell_name: str, next_cell_name: str) -> None:
-        self.board = board
-        self.next_cell = next_cell_name
-        self.type = self._move_type(prev_cell_name, next_cell_name)
+    def __post_init__(self) -> None:
+        self.type = self._move_type()
 
-    def _move_type(self, prev_cell_name: str, next_cell_name: str) -> MoveType:
+    def _move_type(self) -> MoveType:
 
-        if is_cell_empty(next_cell_name, self.board):
+        if is_cell_empty(self.step.end_cell, self.board):
             return MoveType.EMPTY_CELL
         
-        elif are_teammates(prev_cell_name, next_cell_name, self.board):
+        elif are_teammates(self.step.start_cell, self.step.end_cell, self.board):
             return MoveType.TEAMMATE
         else:
             return MoveType.CAPTURE

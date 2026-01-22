@@ -17,7 +17,7 @@ class King(Piece):
     def possible_moves(self, cell_name: str) -> list[str]: 
         row, column = map_cell_to_index(cell_name)
 
-        possible_moves = [move.next_cell 
+        possible_moves = [move.step.end_cell 
                           for r in range(row - 1, row + 2)
                           for c in range(column - 1, column + 2)
                           if (move := self.is_next_possible(cell_name, r, c))]

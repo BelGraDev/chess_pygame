@@ -1,26 +1,27 @@
 from .Cell_utils import get_passant_cell
 from Board.Pieces import Piece
 from Board.BoardStatus import BoardStatus
+from Board.Move import Step
 
-def move_piece_in_board(board: BoardStatus, prev_cell_name: str, next_cell_name: str, can_kill_passant: bool) -> Piece | None:
-    prev_piece = board[prev_cell_name]
-    possible_moves = prev_piece.possible_moves(prev_cell_name)
-    if next_cell_name in possible_moves:
+def move_piece_in_board(board: BoardStatus, step: Step,  can_kill_passant: bool) -> Piece | None:
+    prev_piece = board[step.start_cell]
+    possible_moves = prev_piece.possible_moves(step.start_cell)
+    if step.end_cell in possible_moves:
 
-        board[next_cell_name] = prev_piece
-        del board[prev_cell_name]
+        board[step.end_cell] = prev_piece
+        del board[step.start_cell]
         if can_kill_passant:
-            _kill_passant(board, next_cell_name, board.turn)
+            _kill_passant(board, step.end_cell, board.turn)
 
         return prev_piece
     return None
 
-def restore_last_state(board: BoardStatus, prev_piece: Piece, original_next_piece: Piece | None, prev_cell_name: str, next_piece_cell_name: str, next_cell_name: str) -> None:
-    board[prev_cell_name] = prev_piece
+def restore_last_state(board: BoardStatus, prev_piece: Piece, original_next_piece: Piece | None, next_piece_cell_name: str, step: Step) -> None:
+    board[step.start_cell] = prev_piece
     if original_next_piece is not None:
         board[next_piece_cell_name] = original_next_piece
-        if next_piece_cell_name != next_cell_name:
-            del board[next_cell_name]
+        if next_piece_cell_name != step.end_cell:
+            del board[step.end_cell]
     else:
         del board[next_piece_cell_name]
     
