@@ -2,7 +2,7 @@ from .Pieces import Piece, Knight, Bishop, Rook, Pawn, Queen, King
 from .Move import *
 from .boardCells import BoardCells
 from collections.abc import MutableMapping
-from typing import Iterator
+from typing import Iterator, cast
 
 
 class BoardStatus(MutableMapping[str, Piece]):
@@ -66,7 +66,7 @@ class BoardStatus(MutableMapping[str, Piece]):
 
     def is_king_in_check(self, king_color: str) -> bool:
         king_cell = self.w_king_cell if king_color == "w" else self.b_king_cell
-        king =  self._board[king_cell]
+        king =  cast(King, self._board[king_cell])
         return king.is_on_check(king_cell)
     
     
