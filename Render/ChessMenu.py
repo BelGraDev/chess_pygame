@@ -9,6 +9,9 @@ class ChessButton(IntEnum):
 
 class Button(pygame.Rect):
 
+    BUTTON_WIDTH = 300
+    BUTTON_HEIGHT = 75
+
     def __init__(self, type: ChessButton, coord: tuple[float, float], height: int, width: int):
         self.type = type
         x, y = coord
@@ -24,21 +27,19 @@ class ChessMenu:
         self.buttons = self._create_buttons()
 
     
-    def _create_buttons(self) -> list[Button]:
+    def _create_buttons(self) -> tuple[Button, ...]:
         button_types: list[ChessButton] = [ChessButton.PLAY_BUTTON, ChessButton.AI_BUTTON]
-        button_width: int = 300; button_height: int = 75
-        buttons: list[Button] = []
-
-        for i, type in enumerate(button_types):   
-
-            button_x = self.width / 2 - button_width / 2
-            button_y = self.height / 2 + button_height * (i - 1)
-            buttons.append(Button(type, (button_x, button_y), button_height, button_width))
-
-        return buttons
+        return tuple(self._create_button(i, btn_type) 
+                     for i, btn_type in enumerate(button_types))
     
-    def render_menu(self) -> None:
+    
+    def _create_button(self, position: int, btn_type: ChessButton) -> Button:
+        button_x = self.width / 2 - Button.BUTTON_WIDTH / 2
+        button_y = self.height / 2 + Button.BUTTON_HEIGHT * (position - 1)
+        return Button(btn_type, (button_x, button_y), Button.BUTTON_HEIGHT, Button.BUTTON_WIDTH)
+    
 
+    def render_menu(self) -> None:
         self.screen.blit(self.background_image, (-275,0))
         image_path = "Render/images/Buttons/"
         for button in self.buttons:
@@ -53,6 +54,7 @@ class ChessMenu:
                     pass
 
             self.screen.blit(image, button) # type: ignore
+
 
     def button_clicked(self, coord: tuple[int, int]) -> ChessButton | None:
             for button in self.buttons:
