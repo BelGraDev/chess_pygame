@@ -13,7 +13,7 @@ class Bishop(Piece):
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_bishop.png").convert_alpha()
-        self.value = PieceValue.BISHOP
+        self.value: PieceValue = PieceValue.BISHOP
 
 
     def possible_moves(self, cell_name: str) -> list[str]:
