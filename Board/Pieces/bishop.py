@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from Board.Pieces import Piece
+from Board.Pieces import Piece, PieceValue
 from Board.boardCells import Position
 from Utils.Cell_utils import map_cell_to_index
 import pygame
@@ -13,6 +13,8 @@ class Bishop(Piece):
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_bishop.png").convert_alpha()
+        self.value = PieceValue.BISHOP
+
 
     def possible_moves(self, cell_name: str) -> list[str]:
 

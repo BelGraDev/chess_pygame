@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from Board.Pieces import Piece
+from Board.Pieces import Piece, PieceValue
 from Utils.Cell_utils import map_cell_to_index
 from Board.boardCells import Position
 import pygame
@@ -13,6 +13,7 @@ class Rook(Piece):
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_rook.png").convert_alpha()
+        self.value = PieceValue.ROOK
 
     def possible_moves(self, cell_name: str) -> list[str]:
 

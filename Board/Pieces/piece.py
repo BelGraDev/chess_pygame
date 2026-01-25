@@ -5,19 +5,27 @@ from Board.Move import MoveType, Move, Step
 from Board.boardCells import Position
 from pygame import Rect, Surface
 from typing import TYPE_CHECKING
+from enum import IntEnum
 
 if TYPE_CHECKING:
     from Board.BoardStatus import BoardStatus
 
+class PieceValue(IntEnum):
+    PAWN = 1
+    KNIGHT = BISHOP = 3
+    ROOK = 5
+    QUEEN = 9
 
 class Piece(ABC, Rect):
 
     image: Surface
+    value: PieceValue
     def __init__(self, type: str, board: BoardStatus) -> None:
         self.type = type
         self.board = board
         self.has_moved = False
         self.image_path = "Board/Pieces/images/"
+
 
     def is_next_possible(self, prev_cell_name: str, row: int, col: int) -> Move | None:
 

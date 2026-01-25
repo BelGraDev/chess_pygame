@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from Board.Pieces import Piece
+from Board.Pieces import Piece, PieceValue
 from Board.Move import MoveType, Step
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell
 import pygame
@@ -13,6 +13,7 @@ class Pawn(Piece):
     def __init__(self, type: str, board: BoardStatus) -> None:
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_pawn.png").convert_alpha()
+        self.value = PieceValue.PAWN
         self.is_passant = False
     
 
