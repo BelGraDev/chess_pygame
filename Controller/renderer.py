@@ -1,4 +1,4 @@
-from Interfaces.IChessUI import IChessUI
+from Interfaces import IChessUI
 from Board.logicManager import LogicManager
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
 from Board.Move import MoveType

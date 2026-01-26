@@ -1,5 +1,5 @@
 from Render.ChessMenu import Button
-from Interfaces.IChessUI import IChessUI
+from Interfaces import IChessUI
 from Board.Pieces import Piece
 from .ui import UI
 from .endGameUI import EndGameUI

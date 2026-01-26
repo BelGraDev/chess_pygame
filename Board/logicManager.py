@@ -5,7 +5,7 @@ from .SpecialMovesLogic import CastleLogic, PassantLogic
 from .BoardStatus import BoardStatus
 from .MoveValidator import MoveValidator
 from .gameLogic import GameLogic
-from Interfaces.ILogicManager import ILogicManager
+from Interfaces import ILogicManager
 
 class LogicManager(ILogicManager):
 
@@ -20,7 +20,7 @@ class LogicManager(ILogicManager):
     def move(self, prev_cell_name: str, next_cell_name: str) -> MoveType:
         step = Step(prev_cell_name, next_cell_name)
         move = Move(self.board_status, step)
-
+        print(move.move_cost)
         if move.type is not MoveType.TEAMMATE:
             if not self.move_validator.is_valid_move(step):
                 return MoveType.NOT_AVAILABLE

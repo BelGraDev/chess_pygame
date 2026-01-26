@@ -3,7 +3,7 @@ from Controller.GameController import GameController
 from Render.chessUI import ChessUI
 from Render.ChessMenu import *
 from GameModes.GameState import GameState
-from Interfaces.IMode import IMode
+from Interfaces import IMode
 
 class PvpMode(IMode):
 

@@ -1,7 +1,6 @@
 from Board.Move import MoveType
-from Interfaces.IController import IController
+from Interfaces import IController, IChessUI
 from Board.logicManager import LogicManager
-from Interfaces.IChessUI import IChessUI
 from Render.ChessMenu import ChessButton
 from .renderer import Renderer
 from .controllerStatus import ControllerStatus
