@@ -65,7 +65,7 @@ class Pawn(Piece):
         for c in range(col - 1, col + 2, 2):
             contiguous_cell_name: str = map_index_to_cell(row, c)
             contiguous_piece = self.board.get(contiguous_cell_name)
-            if isinstance(contiguous_piece, Pawn):
+            if isinstance(contiguous_piece, Pawn) and contiguous_piece.type != self.type:
                 if contiguous_piece.is_passant:
                     direction: int = 1 if self.type == "w" else - 1
                     possible_move: str = map_index_to_cell(row - 1 * direction, c)
