@@ -4,7 +4,7 @@ from Utils.Board_Utils import move_piece_in_board
 from .SpecialMovesLogic import castle, want_to_castle, manage_passant, can_kill_passant
 from .BoardStatus import BoardStatus
 from .MoveValidator import is_valid_move
-from .gameLogic import GameLogic
+from .gameLogic import is_end_game, pawn_ascension, move_to_cell, can_color_play, complete_promotion
 from .aiLogic import get_best_ai_move
 from Interfaces.ILogicManager import ILogicManager
 from typing import Optional
@@ -13,7 +13,6 @@ class LogicManager(ILogicManager):
 
     def __init__(self) -> None:
         self.board_status = BoardStatus()
-        self.game_logic = GameLogic(self.board_status)
 
 
     def move(self, prev_cell_name: str, next_cell_name: str) -> MoveType:
@@ -43,13 +42,13 @@ class LogicManager(ILogicManager):
 
                 self.board_status.update_king_cell(next_cell_name, self.board_status.turn)
 
-                end_game = self.game_logic.is_end_game()
+                end_game = is_end_game(self.board_status)
                 if end_game:
                     return end_game
         return move.type
 
 
-    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]]:
+    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]] | MoveType:
         return get_best_ai_move(self.board_status, ai_turn)
 
 
@@ -70,15 +69,15 @@ class LogicManager(ILogicManager):
     
 
     def can_color_play(self, cell_name: str) -> bool:
-        return self.game_logic.can_color_play(cell_name)
+        return can_color_play(self.board_status, cell_name)
     
         
     def move_to_cell(self, next_cell_name: str) -> None:
-        self.game_logic.move_to_cell(next_cell_name)
+        move_to_cell(self.board_status, next_cell_name)
 
         
     def pawn_ascension(self, cell_name: str):
-        return self.game_logic.pawn_ascension(cell_name)
+        return pawn_ascension(self.board_status, cell_name)
     
 
     def ascension_pieces(self) -> list[Piece]:
@@ -86,7 +85,7 @@ class LogicManager(ILogicManager):
     
 
     def complete_promotion(self, cell_name: str, piece: Piece) -> None:
-        self.game_logic.complete_promotion(cell_name, piece)
+        complete_promotion(self.board_status, cell_name, piece)
 
     def is_end_game(self) -> bool:
         return self.board_status.is_end_game
