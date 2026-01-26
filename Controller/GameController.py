@@ -63,6 +63,13 @@ class GameController(IController):
             
             self.renderer.promote_piece(cell_name)
 
+    def ai_game(self, cell_name: str, player_turn: str) -> None:
+        if player_turn == self.logic_manager.get_turn():
+            self.render_move(cell_name)
+        else:
+            ai_turn = 'w' if player_turn == 'b' else 'b'
+            prev_cell, ai_move_cell = self.logic_manager.get_best_ai_move(ai_turn)
+            self.renderer.render_ai_move(prev_cell, ai_move_cell)
 
     def check_if_button_pressed(self, coord: tuple[int, int]) -> ChessButton | None:
         for button in self.chessUI.get_end_game_buttons():

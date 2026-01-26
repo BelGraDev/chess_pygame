@@ -32,12 +32,12 @@ while True:
                     case ChessButton.PLAY_BUTTON:
                         game_mode = PvpMode(screen)
                         game_mode.init_mode()
-                        game_state: GameState = GameState.PVP
+                        game_state = GameState.PVP
 
                     case ChessButton.AI_BUTTON:
                         game_mode = AIMode(screen)
                         game_mode.init_mode()
-                        game_state: GameState = GameState.AI
+                        game_state = GameState.AI
 
                     case _:
                         pass

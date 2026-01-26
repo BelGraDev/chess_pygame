@@ -1,43 +1,42 @@
 from .Pieces import Piece
 from .Move import Step, MoveType, Move
 from Utils.Board_Utils import move_piece_in_board
-from .SpecialMovesLogic import CastleLogic, PassantLogic
+from .SpecialMovesLogic import castle, want_to_castle, manage_passant, can_kill_passant
 from .BoardStatus import BoardStatus
-from .MoveValidator import MoveValidator
+from .MoveValidator import is_valid_move
 from .gameLogic import GameLogic
-from Interfaces import ILogicManager
+from .aiLogic import get_best_ai_move
+from Interfaces.ILogicManager import ILogicManager
+from typing import Optional
 
 class LogicManager(ILogicManager):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.board_status = BoardStatus()
-        self.move_validator = MoveValidator(self.board_status)
-        self.castleLogic = CastleLogic(self.board_status)
-        self.passantLogic = PassantLogic(self.board_status)
         self.game_logic = GameLogic(self.board_status)
 
 
     def move(self, prev_cell_name: str, next_cell_name: str) -> MoveType:
         step = Step(prev_cell_name, next_cell_name)
         move = Move(self.board_status, step)
-        print(move.move_cost)
+
         if move.type is not MoveType.TEAMMATE:
-            if not self.move_validator.is_valid_move(step):
+            if not is_valid_move(self.board_status, step):
                 return MoveType.NOT_AVAILABLE
             else: 
 
-                if self.castleLogic.want_to_castle(step):
+                if want_to_castle(self.board_status, step):
                     king = self.get_piece(prev_cell_name)
                     if not self.board_status.is_king_in_check(king.type):
-                        self.castleLogic.castle(step)
+                        castle(self.board_status, step)
                         move.type = MoveType.CASTLE
                     else:
                         return MoveType.NOT_AVAILABLE
                 else:
-                    can_kill_passant = self.passantLogic.can_kill_passant(step)
-                    move_piece_in_board(self.board_status, step, can_kill_passant)
-                    self.passantLogic.manage_passant(step)
-                    if can_kill_passant:
+                    _can_kill_passant = can_kill_passant(self.board_status, step)
+                    move_piece_in_board(self.board_status, step, _can_kill_passant)
+                    manage_passant(self.board_status, step)
+                    if _can_kill_passant:
                         return MoveType.PASSANT_PAWN
                     if self.pawn_ascension(next_cell_name):
                         return MoveType.PAWN_ASCENSION
@@ -47,15 +46,18 @@ class LogicManager(ILogicManager):
                 end_game = self.game_logic.is_end_game()
                 if end_game:
                     return end_game
-                
         return move.type
+
+
+    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]]:
+        return get_best_ai_move(self.board_status, ai_turn)
 
 
     def get_piece(self, cell_name: str) -> Piece:
         return self.board_status[cell_name]
     
 
-    def get_piece_if_any(self, cell_name: str) -> Piece  | None:
+    def get_piece_if_any(self, cell_name: str) -> Optional[Piece]:
         return self.board_status.get(cell_name)
 
 

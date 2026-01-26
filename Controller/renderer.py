@@ -18,6 +18,7 @@ class Renderer:
         self._unhighlight_cell(prev_cell_name)
         self.redraw_list_cells(next_cell_name, self.controller_status.possible_moves_cells)
 
+
     def render_castle(self, cell_name: str) -> None:
         row, col = map_cell_to_index(cell_name)
 
@@ -60,6 +61,11 @@ class Renderer:
                 else:
                     piece = self.logic_manager.get_piece(move)
                     self.chessUI.draw_replacement_pieces(piece, move)
+
+
+    def render_ai_move(self, prev_cell_name: str, next_cell_name: str) -> None:
+        self._move_to_cell(next_cell_name)
+        self.chessUI.draw_empty_cell(prev_cell_name)
 
 
     def ascend_pawn(self, prev_cell_name: str, cell_name: str) -> None:
