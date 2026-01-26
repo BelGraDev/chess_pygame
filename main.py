@@ -1,8 +1,7 @@
 import pygame
 import sys
 from Render.ChessMenu import *
-from GameModes.PvpMode import PvpMode
-from GameModes.GameState import GameState
+from GameModes import GameState, PvpMode, AIMode
 
 pygame.init()
 
@@ -24,24 +23,21 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
 
             coord = pygame.mouse.get_pos()
-
+            
             if game_state is GameState.MENU:
 
                 type = ui.button_clicked(coord)
 
                 match type:
-
                     case ChessButton.PLAY_BUTTON:
-
                         game_mode = PvpMode(screen)
                         game_mode.init_mode()
                         game_state: GameState = GameState.PVP
 
-                    # case ChessButton.AI_BUTTON:
-
-                    #     game_mode = OnlineMode(screen)
-                    #     game_mode.init_mode()
-                    #     game_state: GameState = GameState.AI
+                    case ChessButton.AI_BUTTON:
+                        game_mode = AIMode(screen)
+                        game_mode.init_mode()
+                        game_state: GameState = GameState.AI
 
                     case _:
                         pass

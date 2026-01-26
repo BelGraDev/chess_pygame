@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from GameModes.GameState import GameState
+from GameModes import GameState
 from Render.chessUI import ChessUI
 from Render.ChessMenu import ChessMenu, ChessButton
 from Board.logicManager import LogicManager
