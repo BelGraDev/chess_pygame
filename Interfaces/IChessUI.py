@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from Render.ChessMenu import Button
 from Render.boardCells import Cell
-from Board.BoardStatus import BoardStatus
+from Board import BoardStatus
 
 from Board.Pieces import Piece
 from pygame import Surface

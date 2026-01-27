@@ -1,6 +1,6 @@
 from .Cell_utils import get_passant_cell
 from Board.Pieces import Piece
-from Board.BoardStatus import BoardStatus
+from Board import BoardStatus
 from Board.Move import Step
 
 def move_piece_in_board(board: BoardStatus, step: Step,  can_kill_passant: bool) -> Piece | None:

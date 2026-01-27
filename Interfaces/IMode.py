@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from GameModes import GameState
 from Render.chessUI import ChessUI
 from Render.ChessMenu import ChessMenu, ChessButton
-from Board.logicManager import LogicManager
+from Board import LogicManager
 from Controller.GameController import GameController
 from pygame import Surface
 

@@ -1,4 +1,4 @@
-from Board.logicManager import LogicManager
+from Board import LogicManager, PieceColor
 from Board.Pieces import Piece
 from dataclasses import dataclass, field
 from random import randint
@@ -21,8 +21,8 @@ class ControllerStatus:
 
 
     def _calculate_player_and_ai_turn(self) -> tuple[str, str]:
-        player_turn = 'w' if randint(0, 1) == 0 else 'b'
-        ai_turn = 'w' if player_turn == 'b' else 'b'
+        player_turn = PieceColor.WHITE if randint(0, 1) == 0 else PieceColor.BLACK
+        ai_turn = PieceColor.WHITE if player_turn == PieceColor.BLACK else PieceColor.BLACK
         return player_turn, ai_turn
 
 

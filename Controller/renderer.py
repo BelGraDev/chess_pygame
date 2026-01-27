@@ -1,5 +1,5 @@
 from Interfaces import IChessUI
-from Board.logicManager import LogicManager
+from Board import LogicManager, PieceColor
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
 from Board.Move import MoveType
 from .controllerStatus import ControllerStatus
@@ -33,7 +33,7 @@ class Renderer:
 
     def render_passant_kill(self, cell_name: str) -> None:
         row, col = map_cell_to_index(cell_name)
-        direction: int = 1 if self.logic_manager.get_turn() == "w" else -1
+        direction: int = 1 if self.logic_manager.get_turn() == PieceColor.WHITE else -1
         passant_cell: str = map_index_to_cell(row + direction, col)
         self.chessUI.draw_empty_cell(passant_cell)
 

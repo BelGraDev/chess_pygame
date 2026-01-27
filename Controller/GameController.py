@@ -1,6 +1,6 @@
 from Board.Move import MoveType
 from Interfaces import IController, IChessUI
-from Board.logicManager import LogicManager
+from Board import LogicManager
 from Render.ChessMenu import ChessButton
 from .renderer import Renderer
 from .controllerStatus import ControllerStatus
@@ -94,7 +94,7 @@ class GameController(IController):
     def _is_player_turn(self) -> bool:
         return self.controller_status.player_turn == self.logic_manager.get_turn()
     
-    
+
     def _can_ai_play(self) -> bool:
         return not self._is_player_turn() and not self.logic_manager.is_end_game()
 

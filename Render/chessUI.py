@@ -5,7 +5,7 @@ from .ui import UI
 from .endGameUI import EndGameUI
 from .boardUI import BoardUI
 from .boardCells import BoardCells, Cell
-from Board.BoardStatus import BoardStatus
+from Board import BoardStatus
 import pygame
 
 class ChessUI(IChessUI, UI):

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from Board.Pieces import Piece
 from Board.Move import MoveType
-from Board.BoardStatus import BoardStatus
+from Board import BoardStatus
 
 class ILogicManager(ABC):
 
