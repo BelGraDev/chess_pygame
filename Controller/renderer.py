@@ -1,6 +1,7 @@
 from Interfaces import IChessUI
 from Board import LogicManager, PieceColor
-from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
+from Utils.Cell_utils import map_cell_to_index, map_index_to_cell
+from Utils.Board_Utils import is_cell_empty
 from Board.Move import MoveType
 from .controllerStatus import ControllerStatus
 from Board.Pieces import Piece

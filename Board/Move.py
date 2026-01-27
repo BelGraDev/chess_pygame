@@ -1,13 +1,13 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, NamedTuple
 from dataclasses import dataclass, field
-from Utils.Cell_utils import is_cell_empty, are_teammates,is_cell_centered, is_cell_advanced
-from enum import Enum
+from Utils.Board_Utils import is_cell_empty, are_teammates,is_cell_centered, is_cell_advanced
+from enum import IntEnum
 
 if TYPE_CHECKING:
     from .BoardStatus import BoardStatus
 
-class MoveType(Enum):
+class MoveType(IntEnum):
     TIE = -3
     CHECK_MATE = -2
     NOT_AVAILABLE = -1
