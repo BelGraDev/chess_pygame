@@ -15,6 +15,7 @@ class PieceValue(IntEnum):
     KNIGHT = BISHOP = 3
     ROOK = 5
     QUEEN = 9
+    KING = 0
 
 class Piece(ABC, Rect):
 

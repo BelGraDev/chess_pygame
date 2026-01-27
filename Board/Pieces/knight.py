@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from Board.Pieces import Piece
+from Board.Pieces import Piece, PieceValue
 from Utils.Cell_utils import map_cell_to_index
 import pygame
 
@@ -14,6 +14,7 @@ class Knight(Piece):
 
         super().__init__(type, board)
         self.image = pygame.image.load(f"{self.image_path}{type}_knight.png").convert_alpha()
+        self.value = PieceValue.KNIGHT
 
 
 
