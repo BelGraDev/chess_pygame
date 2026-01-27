@@ -48,7 +48,7 @@ class LogicManager(ILogicManager):
         return move.type
 
 
-    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]] | MoveType:
+    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]]:
         return get_best_ai_move(self.board_status, ai_turn)
 
 
