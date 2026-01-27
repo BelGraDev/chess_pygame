@@ -1,6 +1,6 @@
 from Board import BoardStatus
 from Board.Pieces import Pawn
-from Utils.Cell_utils import are_teammates, get_passant_cell
+from Utils.Board_Utils import are_teammates, get_passant_cell
 from Board.Move import Step
 
 

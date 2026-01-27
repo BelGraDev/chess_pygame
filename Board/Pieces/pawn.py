@@ -2,10 +2,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from Board.Pieces import Piece, PieceValue
 from Board.Move import MoveType, Step
+from Board import PieceColor
 from Utils.Cell_utils import map_cell_to_index, map_index_to_cell
 import pygame
 if TYPE_CHECKING:
-    from Board.BoardStatus import BoardStatus
+    from Board import BoardStatus
 
 class Pawn(Piece):
 
@@ -20,7 +21,7 @@ class Pawn(Piece):
     def possible_moves(self, cell_name: str) -> list[str]:
         row, column = map_cell_to_index(cell_name)   
         possible_moves: list[str] = []
-        direction: int = 1 if self.type == "w" else -1
+        direction: int = 1 if self.type == PieceColor.WHITE else -1
 
         for col in range(column - 1, column + 2):
             move = self.is_next_possible(cell_name, row - 1 * direction, col)
@@ -67,7 +68,7 @@ class Pawn(Piece):
             contiguous_piece = self.board.get(contiguous_cell_name)
             if isinstance(contiguous_piece, Pawn) and contiguous_piece.type != self.type:
                 if contiguous_piece.is_passant:
-                    direction: int = 1 if self.type == "w" else - 1
+                    direction: int = 1 if self.type == PieceColor.WHITE else - 1
                     possible_move: str = map_index_to_cell(row - 1 * direction, c)
                     passant_moves.append(possible_move)
 

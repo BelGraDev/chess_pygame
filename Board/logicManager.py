@@ -1,11 +1,11 @@
 from .Pieces import Piece
 from .Move import Step, MoveType, Move
 from Utils.Board_Utils import move_piece_in_board
-from .SpecialMovesLogic import castle, want_to_castle, manage_passant, can_kill_passant
-from .BoardStatus import BoardStatus
-from .MoveValidator import is_valid_move
-from .gameLogic import is_end_game, pawn_ascension, move_to_cell, can_color_play, complete_promotion
-from .aiLogic import get_best_ai_move
+from Board import BoardStatus
+from .gameLogic.SpecialMovesLogic import castle, want_to_castle, manage_passant, can_kill_passant
+from .gameLogic.MoveValidator import is_valid_move
+from .gameLogic.gameLogic import is_end_game, pawn_ascension, move_to_cell, can_color_play, complete_promotion
+from .gameLogic.aiLogic import get_best_ai_move
 from Interfaces.ILogicManager import ILogicManager
 from typing import Optional
 

@@ -1,14 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from Utils.Cell_utils import map_index_to_cell
 from Board.Move import MoveType, Move, Step
-from Board.boardCells import Position
+from Utils.Cell_utils import map_index_to_cell
 from pygame import Rect, Surface
 from typing import TYPE_CHECKING
 from enum import IntEnum
 
 if TYPE_CHECKING:
-    from Board.BoardStatus import BoardStatus
+    from Board import BoardStatus, Position
+
 
 class PieceValue(IntEnum):
     PAWN = 1
@@ -45,6 +45,7 @@ class Piece(ABC, Rect):
         except IndexError:
             return None
         
+
     def _check_line(self, start: Position, step: Position, current_cell_name: str) -> list[str]:
 
         possible_moves: list[str] = []
@@ -64,12 +65,15 @@ class Piece(ABC, Rect):
 
         return possible_moves
         
+
     @abstractmethod
     def possible_moves(self, cell_name: str) -> list[str]:
         pass
 
+
     def __str__(self) -> str:
         return f'{self.__class__.__name__}(type={self.type!r})'
+
 
     def __repr__(self) -> str:
         return self.__str__()

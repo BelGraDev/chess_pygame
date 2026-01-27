@@ -1,11 +1,13 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from Board.Pieces import Piece, Rook, Knight, Bishop, Pawn, PieceValue
-from Utils.Cell_utils import map_cell_to_index, map_index_to_cell, is_cell_empty
+from Board import PieceColor
+from Utils.Cell_utils import map_cell_to_index, map_index_to_cell
+from Utils.Board_Utils import is_cell_empty
 import pygame
 
 if TYPE_CHECKING:
-    from Board.BoardStatus import BoardStatus
+    from Board import BoardStatus
     
 class King(Piece):
     
@@ -75,7 +77,7 @@ class King(Piece):
     
     def _inspect_pawn(self, cell_name: str) -> bool:
         row, col = map_cell_to_index(cell_name)
-        direction = 1 if self.type == "b" else -1
+        direction = 1 if self.type == PieceColor.BLACK else -1
         check_pawn_offsets = [(1 * direction, 1), (1 * direction, -1)]
 
         for r, c in check_pawn_offsets:

@@ -1,5 +1,4 @@
-from Utils.Cell_utils import get_passant_cell
-from Utils.Board_Utils import move_piece_in_board, restore_last_state
+from Utils.Board_Utils import move_piece_in_board, restore_last_state, get_passant_cell
 from .SpecialMovesLogic import can_kill_passant
 from Board.Move import Step
 from Board import BoardStatus
