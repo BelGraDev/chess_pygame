@@ -8,10 +8,10 @@ if TYPE_CHECKING:
     from .BoardStatus import BoardStatus
 
 class MoveType(IntEnum):
-    TIE = -3
-    CHECK_MATE = -2
+    TIE = 0
+    CHECK_MATE = int('inf')
     NOT_AVAILABLE = -1
-    EMPTY_CELL = 0
+    EMPTY_CELL = -2
     CAPTURE = 1
     TEAMMATE = 2
     CASTLE = 3
