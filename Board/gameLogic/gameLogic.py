@@ -41,6 +41,6 @@ def is_end_game(board: BoardStatus) -> None | MoveType:
                 if is_valid:
                     return None
     end_game = MoveType.CHECK_MATE if board.is_king_in_check(opponent_color) else MoveType.TIE
-    board.is_end_game = True
+    board.end_game = end_game
     return end_game
 
