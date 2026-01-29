@@ -1,11 +1,11 @@
 from .Pieces import Piece
 from .Move import Step, MoveType, Move
 from Utils.Board_Utils import move_piece_in_board
-from Board import BoardStatus
+from Board import BoardStatus, PieceColor
 from .gameLogic.SpecialMovesLogic import castle, want_to_castle, manage_passant, can_kill_passant
 from .gameLogic.MoveValidator import is_valid_move
 from .gameLogic.gameLogic import is_end_game, pawn_ascension, move_to_cell, can_color_play, complete_promotion
-from .gameLogic.aiLogic import get_best_ai_move
+from .gameLogic.aiLogic import AILogic
 from Interfaces.ILogicManager import ILogicManager
 from typing import Optional
 
@@ -48,8 +48,9 @@ class LogicManager(ILogicManager):
         return move.type
 
 
-    def get_best_ai_move(self, ai_turn: str) -> Optional[tuple[str, str]]:
-        return get_best_ai_move(self.board_status, ai_turn)
+    def get_best_ai_move(self, p_turn: PieceColor, ai_turn: PieceColor) -> Optional[tuple[str, str]]:
+        self.ai_logic = AILogic(self.board_status, p_turn, ai_turn)
+        return self.ai_logic.get_best_ai_move()
 
 
     def get_piece(self, cell_name: str) -> Piece:
@@ -88,7 +89,7 @@ class LogicManager(ILogicManager):
         complete_promotion(self.board_status, cell_name, piece)
 
     def is_end_game(self) -> bool:
-        return self.board_status.is_end_game
+        return self.board_status.end_game is not None
 
     
 

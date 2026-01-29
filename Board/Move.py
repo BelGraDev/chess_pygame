@@ -2,21 +2,21 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, NamedTuple
 from dataclasses import dataclass, field
 from Utils.Board_Utils import is_cell_empty, are_teammates,is_cell_centered, is_cell_advanced
-from enum import IntEnum
+from enum import Enum
 
 if TYPE_CHECKING:
     from .BoardStatus import BoardStatus
 
-class MoveType(IntEnum):
-    TIE = 0
-    CHECK_MATE = int('inf')
-    NOT_AVAILABLE = -1
-    EMPTY_CELL = -2
-    CAPTURE = 1
-    TEAMMATE = 2
-    CASTLE = 3
-    PAWN_ASCENSION = 4
-    PASSANT_PAWN = 5
+class MoveType(float, Enum):
+    TIE = 0.
+    CHECK_MATE = float('inf')
+    NOT_AVAILABLE = -1.
+    EMPTY_CELL = -2.
+    CAPTURE = 1.
+    TEAMMATE = 2.
+    CASTLE = 3.
+    PAWN_ASCENSION = 4.
+    PASSANT_PAWN = 5.
 
 
 class Step(NamedTuple):
