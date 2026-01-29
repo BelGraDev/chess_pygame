@@ -76,7 +76,7 @@ class GameController(IController):
             if self._can_ai_play():
                 self.ai_game()
         else:
-            cells = self.logic_manager.get_best_ai_move(self.controller_status.ai_turn)
+            cells = self.logic_manager.get_best_ai_move(self.controller_status.player_turn, self.controller_status.ai_turn)
             if cells is not None:
                 self._move_piece(cells[0], cells[1], True)
     

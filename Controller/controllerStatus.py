@@ -10,17 +10,17 @@ class ControllerStatus:
     logic_manager: LogicManager
     cell_highlighted: Optional[str] = None
     pawn_ascending = False
-    player_turn: str = field(init=False)
-    ai_turn: str = field(init=False)
+    player_turn: PieceColor = field(init=False)
+    ai_turn: PieceColor = field(init=False)
     ascension_pieces: list[Piece] = field(default_factory=list[Piece])
     possible_moves_cells: list[str] = field(default_factory=list[str])
 
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.player_turn, self.ai_turn = self._calculate_player_and_ai_turn()
 
 
-    def _calculate_player_and_ai_turn(self) -> tuple[str, str]:
+    def _calculate_player_and_ai_turn(self) -> tuple[PieceColor, PieceColor]:
         player_turn = PieceColor.WHITE if randint(0, 1) == 0 else PieceColor.BLACK
         ai_turn = PieceColor.WHITE if player_turn == PieceColor.BLACK else PieceColor.BLACK
         return player_turn, ai_turn
