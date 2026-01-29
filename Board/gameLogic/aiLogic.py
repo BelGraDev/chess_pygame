@@ -5,6 +5,8 @@ from Board.Move import Step
 from typing import Callable, Optional
 
 class AILogic:
+
+    MAX_DEPTH = 3
     def __init__(self, board: BoardStatus, p_turn: PieceColor, a_turn: PieceColor) -> None:
         self.board = board
         self.player_turn = p_turn
@@ -19,6 +21,7 @@ class AILogic:
                 for move_cell in piece.possible_moves(cell):
                     move_step = Step(cell, move_cell)
                     original_next_piece = self.board.get(move_cell)
+                    self.board[move_cell] = piece
                     score = self._minimax(0, False)
                     restore_last_state(self.board, piece, original_next_piece, move_cell, move_step)
 
@@ -30,17 +33,19 @@ class AILogic:
     def _minimax(self, depth: int, is_maximizing: bool) -> float:
         if self.board.end_game is not None:
             return self.board.end_game
-        if is_maximizing:
-            best_score = self._compute_score(depth, is_maximizing, max)
-        else:
-            best_score = self._compute_score(depth, is_maximizing, min)
+
+        if depth == self.MAX_DEPTH:
+            return self.board.evaluate_board_status(self.ai_turn)
+        
+        best_score = self._compute_score(depth, is_maximizing, max if is_maximizing else min)
+
         return best_score
     
     def _compute_score(self, depth: int, is_maximizing: bool, min_max_func: Callable[[float, float], float]) -> float:
         best_score = float('-inf') if is_maximizing else float('inf')
         current_turn = self.ai_turn if is_maximizing else self.player_turn
 
-        for cell, piece in self.board.items():
+        for cell, piece in list(self.board.items()):
             if piece.type == current_turn:
                 for move_cell in piece.possible_moves(cell):
                     original_next_piece = self.board.get(move_cell)
@@ -53,7 +58,7 @@ class AILogic:
 
 
 def get_best_ai_move(board: BoardStatus, ai_turn: str)  -> tuple[str, str] | None:
-    for cell, piece in board.items():
+    for cell, piece in list(board.items()):
         if piece.type == ai_turn:
             possible_moves = piece.possible_moves(cell)
             if possible_moves:

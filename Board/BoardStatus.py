@@ -76,6 +76,11 @@ class BoardStatus(MutableMapping[str, Piece]):
                 Rook(self.turn, self), 
                 Bishop(self.turn, self),
                 Knight(self.turn, self)]
+    
+    def evaluate_board_status(self, ai_type: PieceColor) -> float:
+        count_ai = len([piece for piece in self.values() if piece.type == ai_type])
+        count_player = len([piece for piece in self.values() if piece.type != ai_type])
+        return count_ai - count_player
 
 
     def __getitem__(self, cell_name: str) -> Piece:
