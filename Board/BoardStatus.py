@@ -1,7 +1,10 @@
 from .Pieces import Piece, Knight, Bishop, Rook, Pawn, Queen, King
 from . import PieceColor, BoardCells
 from collections.abc import MutableMapping
-from typing import Iterator, cast
+from typing import Iterator, cast, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Board.Move import MoveType
 
 
 class BoardStatus(MutableMapping[str, Piece]):
@@ -46,7 +49,7 @@ class BoardStatus(MutableMapping[str, Piece]):
         self.turn = PieceColor.WHITE
         self.num_rows = self.num_col = 8
         self.cells = BoardCells(self.num_rows,self.num_col)
-        self.is_end_game = False
+        self.end_game: Optional[MoveType] = None
     
 
     def switch_turn(self) -> None:
