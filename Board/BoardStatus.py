@@ -1,5 +1,6 @@
 from .Pieces import Piece, Knight, Bishop, Rook, Pawn, Queen, King
 from . import PieceColor, BoardCells
+from Utils.Board_Utils import is_cell_advanced, is_cell_centered
 from collections.abc import MutableMapping
 from typing import Iterator, cast, Optional, TYPE_CHECKING
 
@@ -78,10 +79,20 @@ class BoardStatus(MutableMapping[str, Piece]):
                 Knight(self.turn, self)]
     
     def evaluate_board_status(self, ai_type: PieceColor) -> float:
-        count_ai = len([piece for piece in self.values() if piece.type == ai_type])
-        count_player = len([piece for piece in self.values() if piece.type != ai_type])
-        return count_ai - count_player
-
+        ai_pieces_value = player_pieces_value = evaluation = count_ai_pieces = count_player_pieces = 0
+        for cell, piece in self.items():
+            if piece.type == ai_type:
+                ai_pieces_value += piece.value
+                count_ai_pieces += 1
+                evaluation += int(is_cell_centered(cell))
+                evaluation += int(is_cell_advanced(cell, self)) * 0.7
+            else:
+                player_pieces_value += piece.value
+                count_player_pieces += 1
+        evaluation += (ai_pieces_value - player_pieces_value) * 2
+        evaluation += (count_ai_pieces - count_player_pieces) * 2
+        return evaluation
+        
 
     def __getitem__(self, cell_name: str) -> Piece:
         return self._board[cell_name]
