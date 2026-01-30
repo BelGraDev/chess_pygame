@@ -5,7 +5,6 @@ from Render.ChessMenu import ChessButton
 from .renderer import Renderer
 from .controllerStatus import ControllerStatus
 from typing import Optional
-from time import time
 
 class GameController(IController):
     def __init__(self, logic_manager: LogicManager, boardUI: IChessUI):
@@ -77,10 +76,7 @@ class GameController(IController):
             if self._can_ai_play():
                 self.ai_game()
         else:
-            start_time = time()
             cells = self.logic_manager.get_best_ai_move(self.controller_status.player_turn, self.controller_status.ai_turn)
-            end_time = time()
-            print(end_time - start_time)
             if cells is not None:
                 self._move_piece(cells[0], cells[1], True)
     
