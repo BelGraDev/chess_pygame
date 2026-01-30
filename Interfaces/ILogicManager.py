@@ -1,7 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from abc import ABC, abstractmethod
-from Board.Pieces import Piece
-from Board.Move import MoveType
-from Board import BoardStatus
+
+if TYPE_CHECKING:
+    from Board.Pieces import Piece
+    from Board.Move import MoveType
+    from Board import BoardStatus
 
 class ILogicManager(ABC):
 

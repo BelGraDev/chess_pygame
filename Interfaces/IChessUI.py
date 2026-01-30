@@ -1,10 +1,12 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from abc import ABC, abstractmethod
-from Render.ChessMenu import Button
-from Render.boardCells import Cell
-from Board import BoardStatus
-
-from Board.Pieces import Piece
-from pygame import Surface
+if TYPE_CHECKING:
+    from Render.ChessMenu import Button
+    from Render.boardCells import Cell
+    from Board import BoardStatus
+    from Board.Pieces import Piece
+    from pygame import Surface
 
 class IChessUI(ABC):
 

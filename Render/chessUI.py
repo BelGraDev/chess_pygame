@@ -1,12 +1,16 @@
-from Render.ChessMenu import Button
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from Interfaces import IChessUI
-from Board.Pieces import Piece
 from .ui import UI
 from .endGameUI import EndGameUI
 from .boardUI import BoardUI
 from .boardCells import BoardCells, Cell
-from Board import BoardStatus
 import pygame
+
+if TYPE_CHECKING:
+    from Render.ChessMenu import Button
+    from Board.Pieces import Piece
+    from Board import BoardStatus
 
 class ChessUI(IChessUI, UI):
 

@@ -1,5 +1,5 @@
-from GameModes import GameState
 from Interfaces import IMode
+from GameModes import GameState
 from pygame import Surface
 
 class PvpMode(IMode):

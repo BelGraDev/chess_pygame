@@ -1,6 +1,7 @@
 from Board.BoardStatus import BoardStatus, PieceColor
 from Utils.Board_Utils import restore_last_state
 from Board.Move import Step
+from Board.Utils.efficientBoardUtils import to_numpy
 from typing import Callable, Optional
 
 class AILogic:
@@ -12,6 +13,8 @@ class AILogic:
         self.ai_turn = a_turn
 
     def get_best_ai_move(self) -> Optional[Step]:
+        efficient_board = to_numpy(self.board)
+        print(efficient_board)
         best_score = float('-inf')
         alpha = float('-inf')
         beta = float('inf')
