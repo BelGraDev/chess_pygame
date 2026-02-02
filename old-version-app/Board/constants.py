@@ -1,0 +1,1 @@
+IMAGE_PATH = 'old-version-app/Board/Pieces/images/'

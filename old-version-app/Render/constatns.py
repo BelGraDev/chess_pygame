@@ -1,0 +1,1 @@
+IMAGES_PATH = 'old-version-app/Render/images'

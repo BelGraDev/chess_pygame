@@ -1,5 +1,5 @@
-import constants
-from Utils.fen_strings import parse_fen
+import chess_engine.utils.constants as constants
+from utils.fen_strings import parse_fen
 import numpy as np
 
 class Board:

@@ -2,6 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from Board.Move import MoveType, Move, Step
 from Utils.Cell_utils import map_index_to_cell
+from Board.constants import IMAGE_PATH
 from pygame import Rect, Surface
 from typing import TYPE_CHECKING
 from enum import IntEnum
@@ -25,7 +26,7 @@ class Piece(ABC, Rect):
         self.type = type
         self.board = board
         self.has_moved = False
-        self.image_path = "Board/Pieces/images/"
+        self.image_path = IMAGE_PATH
 
 
     def is_next_possible(self, prev_cell_name: str, row: int, col: int) -> Move | None:

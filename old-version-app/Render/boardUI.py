@@ -5,6 +5,7 @@ import pygame
 from Board.Pieces import Piece
 from Board import BoardStatus, PieceColor
 from .boardCells import Cell, BoardCells
+from .constatns import IMAGES_PATH
 
 
 class BoardUI(UI):
@@ -15,7 +16,7 @@ class BoardUI(UI):
 
 
     def init_board(self) -> None:
-        background = pygame.image.load("Render/images/background2.png")
+        background = pygame.image.load(f'{IMAGES_PATH}/background2.png')
         self.screen.blit(background, (0,0))
         for row in range(8):
             for col in range(8):
@@ -34,6 +35,7 @@ class BoardUI(UI):
         border = pygame.Rect(self.MARGIN_SIZE, self.MARGIN_SIZE, self.BOARD_WIDTH, self.BOARD_HEIGHT)
         pygame.draw.rect(self.screen, self.BORDER_COLOR, border,  2)
 
+
     def render_pawn_ascension(self, cell_name: str, turn: str, pieces: list[Piece]) -> None:
         self.ascension_cells.clear()
         row, col = map_cell_to_index(cell_name)
@@ -44,19 +46,23 @@ class BoardUI(UI):
             self.ascension_cells.append(cell_name)
             self._draw_ascension_cell(piece, cell_name)
 
+
     def draw_possible_move(self, cell_name: str) -> None:
-        image = pygame.image.load("Render/images/move.png").convert_alpha()
+        image = pygame.image.load(f'{IMAGES_PATH}/move.png').convert_alpha()
         cell = self.board_cells[cell_name]
         image_rect = image.get_rect(center= cell.center)
         self.screen.blit(image, image_rect)
+
 
     def _draw_ascension_cell(self, piece: Piece, cell_name: str) -> None:
         cell = self.board_cells[cell_name]
         redraw_cell_piece(self.screen, self.ASCENSION_CELL_COLOR, piece, cell)
 
+
     def draw_highlight(self, piece: Piece, cell_name: str) -> None:
         cell = self.board_cells[cell_name]
         redraw_cell_piece(self.screen, self.HIGHLIGHT_COLOR, piece, cell)
+    
     
     def draw_replacement_pieces(self, piece: Piece, cell_name: str) -> None:
         cell = self.board_cells[cell_name]

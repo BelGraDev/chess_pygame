@@ -1,4 +1,4 @@
-from enums import PieceType, Color
+from chess_engine.utils.enums import PieceType, Color
 
 OFFSET_MARGIN = [PieceType.OFF_BOARD]
 CODE_PIECES = set('rnbqkp')

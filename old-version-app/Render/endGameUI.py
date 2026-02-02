@@ -1,6 +1,7 @@
 import pygame
 from .ChessMenu import ChessButton, Button
 from .ui import UI
+from .constatns import IMAGES_PATH 
 
 class EndGameUI(UI):
 
@@ -10,12 +11,12 @@ class EndGameUI(UI):
 
 
     def render_mate(self, turn: str) -> None:
-        image = pygame.image.load(f"Render/images/{turn}_mate.png").convert_alpha()
+        image = pygame.image.load(f'{IMAGES_PATH}/{turn}_mate.png').convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
 
     def render_tie(self) -> None:
-        image = pygame.image.load("Render/images/tie.png").convert_alpha()
+        image = pygame.image.load(f'{IMAGES_PATH}/tie.png').convert_alpha()
         self.screen.blit(image, (self.MARGIN_SIZE, self.BOARD_HEIGHT / 2 - image.get_height() / 2 + self.MARGIN_SIZE))
 
         
@@ -27,7 +28,7 @@ class EndGameUI(UI):
 
         go_to_menu_button = Button(ChessButton.GO_TO_MENU, (middle_x - button_width - self.MARGIN_SIZE, middle_y + button_width - self.MARGIN_SIZE * 2), button_height, button_width)
         play_again_button = Button(ChessButton.PLAY_AGAIN, (middle_x + self.MARGIN_SIZE, middle_y + button_width - self.MARGIN_SIZE * 2), button_height, button_width)
-        image_path = "Render/images/Buttons/"
+        image_path = f'{IMAGES_PATH}/Buttons/'
 
         go_to_menu_image = pygame.image.load(f"{image_path}back_to_menu.png")
         play_again_image = pygame.image.load(f"{image_path}play_again.png")

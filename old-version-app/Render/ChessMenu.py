@@ -1,5 +1,6 @@
 import pygame
 from enum import IntEnum
+from .constatns import IMAGES_PATH
 
 class ChessButton(IntEnum):
     PLAY_BUTTON = 1
@@ -21,7 +22,7 @@ class ChessMenu:
 
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen: pygame.Surface = screen
-        self.background_image = pygame.image.load("Render/images/menu_background1.png")
+        self.background_image = pygame.image.load(f'{IMAGES_PATH}/menu_background1.png')
         self.width = self.screen.get_width()
         self.height = self.screen.get_height()
         self.buttons = self._create_buttons()
@@ -41,15 +42,15 @@ class ChessMenu:
 
     def render_menu(self) -> None:
         self.screen.blit(self.background_image, (-275,0))
-        image_path = "Render/images/Buttons/"
+        image_path = f'{IMAGES_PATH}/Buttons/'
         for button in self.buttons:
             match button.type:
                 
                 case ChessButton.PLAY_BUTTON:
-                    image = pygame.image.load(image_path + "player_vs_player.png")
+                    image = pygame.image.load(f'{image_path}player_vs_player.png')
 
                 case ChessButton.AI_BUTTON:
-                    image = pygame.image.load(image_path + "player_vs_player.png")
+                    image = pygame.image.load(f'{image_path}player_vs_player.png')
                 case _:
                     pass
 
